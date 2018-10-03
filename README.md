@@ -1,8 +1,4 @@
-# Browser modules
+# One table to rule them all
 
-This is an investigation into browser modules.
-
-## Supported browsers
-
-https://caniuse.com/#feat=es6-module
+Coming soon!
 
