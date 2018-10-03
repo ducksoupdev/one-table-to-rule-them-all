@@ -18,10 +18,10 @@ export default [
       babel({
         babelrc: false,
         presets: [
-          ['env', { modules: false }]
+          ['@babel/preset-env', { modules: false }]
         ],
         plugins: [
-          'external-helpers'
+          '@babel/plugin-external-helpers'
         ]
       })
     ]
