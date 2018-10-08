@@ -1,6 +1,7 @@
 import resolve from 'rollup-plugin-node-resolve'
 import commonjs from 'rollup-plugin-commonjs'
 import babel from 'rollup-plugin-babel'
+import json from 'rollup-plugin-json'
 import pkg from './package.json'
 
 export default [
@@ -8,22 +9,15 @@ export default [
   {
     input: 'src/main.js',
     output: {
-      name: 'browserModules',
+      name: 'mosaicDataTable',
       file: pkg.browser,
       format: 'umd'
     },
     plugins: [
-      resolve(), // so Rollup can find `ms`
-      commonjs(), // so Rollup can convert `ms` to an ES module
-      babel({
-        babelrc: false,
-        presets: [
-          ['@babel/preset-env', { modules: false }]
-        ],
-        plugins: [
-          '@babel/plugin-external-helpers'
-        ]
-      })
+      babel(),
+      resolve(),
+      commonjs(),
+      json()
     ]
   },
 

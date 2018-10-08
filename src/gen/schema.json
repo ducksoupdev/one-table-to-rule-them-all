@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "inElement": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "object" }
+      ]
+    },
+    "enableHover": { "type": "boolean" },
+    "schema": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "object" }
+      ]
+    },
+    "data": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "array" }
+      ]
+    }
+  },
+  "required": ["inElement", "data"]
+}
