@@ -1405,20 +1405,47 @@
   //   </tr>
   // )
 
-  var createBodyNode = function createBodyNode(d) {
+  var createTableBodyNode = function createTableBodyNode(d) {
     return h.apply(void 0, ['tr', null].concat(_toConsumableArray(Object.keys(d).map(function (k) {
       return h('td', null, d[k]);
     }))));
   };
-  var createHeadNode = function createHeadNode(s, d) {
+  var createTableHeadNode = function createTableHeadNode(s, d) {
     return h.apply(void 0, ['tr', null].concat(_toConsumableArray(d.map(function (k) {
       return h('th', null, getTitle(k, s[k]));
     }))));
+  };
+  var createTableFootNode = function createTableFootNode(s, l) {
+    return h('tr', null, h('td', {
+      colspan: "".concat(l)
+    }));
   };
   var createTableNode = function createTableNode(s) {
     return h('table', {
       class: "table".concat(s.enableHover ? ' table-hover' : '')
     }, h('thead', null), h('tbody', null), h('tfoot', null));
+  };
+  var createPaginationNode = function createPaginationNode(s) {
+    return h('nav', {
+      ariaLabel: 'Table pagination'
+    }, h('ul', {
+      class: 'pagination'
+    }, h('li', {
+      class: 'page-item'
+    }, h('a', {
+      class: 'page-link',
+      href: '#'
+    }, 'Previous')), h('li', {
+      class: 'page-item'
+    }, h('a', {
+      class: 'page-link',
+      href: '#'
+    }, '1')), h('li', {
+      class: 'page-item'
+    }, h('a', {
+      class: 'page-link',
+      href: '#'
+    }, 'Next'))));
   };
 
   var letters = 'abcdefghijklmnopqrstuvwxyz';
@@ -1462,7 +1489,7 @@
           p['id'] = generateId();
         }
 
-        state.pr[p.id] = createBodyNode(p);
+        state.pr[p.id] = createTableBodyNode(p);
       }
     }
 
@@ -1471,14 +1498,25 @@
 
   var tableRendered = false;
   var headRendered = false;
+  var footRendered = false;
 
   function renderHead(element, state) {
     var thead = element.querySelector('thead');
 
     if (thead) {
       thead.textContent = '';
-      thead.appendChild(createHeadNode(state.schema.properties, Object.keys(state.data[0])));
+      thead.appendChild(createTableHeadNode(state.schema.properties, Object.keys(state.data[0])));
       headRendered = true;
+    }
+  }
+
+  function renderFoot(element, state) {
+    var tfoot = element.querySelector('tfoot');
+
+    if (tfoot) {
+      tfoot.textContent = '';
+      tfoot.appendChild(createTableFootNode(state, Object.keys(state.data[0]).length));
+      footRendered = true;
     }
   }
 
@@ -1502,6 +1540,18 @@
     }
   }
 
+  function renderPagination(element, state) {
+    var pg = createPaginationNode(state);
+    var pgc = element.querySelector('tfoot > nav');
+    var tfoot = element.querySelector('tfoot > tr > td');
+
+    if (pgc) {
+      pgc.remove();
+    }
+
+    tfoot.appendChild(pg);
+  }
+
   function render(element, state) {
     console.time('render');
 
@@ -1513,7 +1563,12 @@
       renderHead(element, state);
     }
 
+    if (!footRendered) {
+      renderFoot(element, state);
+    }
+
     renderBody(element, state);
+    renderPagination(element, state);
     console.timeEnd('render');
   }
 

@@ -1,4 +1,4 @@
-import { createBodyNode } from './nodes.js'
+import { createTableBodyNode } from './nodes.js'
 import { generateId } from './hydrate.js'
 
 let state = null
@@ -20,7 +20,7 @@ export function initState (is) {
       if (!p['id']) {
         p['id'] = generateId()
       }
-      state.pr[p.id] = createBodyNode(p)
+      state.pr[p.id] = createTableBodyNode(p)
     }
   }
 
