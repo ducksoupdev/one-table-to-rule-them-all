@@ -18,7 +18,7 @@ export const createTableBodyNode = d => h(
   ))
 )
 
-export const createEmptyTableBodyNode = d => h(
+export const createEmptyTableColumnNode = d => h(
   'tr',
   null,
   ...d.map(k => h(
@@ -38,12 +38,13 @@ export const createTableHeadNode = (s, d) => h(
   ))
 )
 
-export const createTableFootNode = (s, l) => h(
+export const createTableEmptyRowNode = (l, cls = {}, c = '') => h(
   'tr',
   null,
   h(
     'td',
-    { colspan: `${l}` }
+    { colspan: `${l}`, ...cls },
+    c
   )
 )
 
@@ -97,5 +98,39 @@ export const createPaginationNode = s => h(
         'Next'
       )
     )
+  )
+)
+
+export const createDisplayedEntriesNode = s => h(
+  'div',
+  { class: 'mb-2 w-25' },
+  h(
+    'span',
+    { class: 'mr-1' },
+    'Display'
+  ),
+  h(
+    'select',
+    { class: 'form-control d-inline-block w-auto', size: 1 },
+    h(
+      'option',
+      { value: '10', selected: s.size === 10 },
+      '10'
+    ),
+    h(
+      'option',
+      { value: '25', selected: s.size === 25 },
+      '25'
+    ),
+    h(
+      'option',
+      { value: '50', selected: s.size === 50 },
+      '50'
+    )
+  ),
+  h(
+    'span',
+    { class: 'ml-1' },
+    'rows'
   )
 )

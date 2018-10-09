@@ -14,61 +14,49 @@
 <div class="page">
     <div class="container-fluid">
         <h1>One table to rule them all</h1>
-        <div id="myTable">
-            <table class="table" id="table">
-                <thead>
-                    <tr>
-                        <th>Test</th>
-                        <th>Test</th>
-                        <th>Test</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Test</td>
-                        <td>Test</td>
-                        <td>Test</td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td>Test</td>
-                        <td>Test</td>
-                        <td>Test</td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
+        <div id="myTable"></div>
     </div>
 </div>
-<script type="module" src="src/main.js" module></script>
+<script type="module" src="dist/table.esm.js"></script>
 <script type="module">
-document.addEventListener('DOMContentLoaded', function () {
-  window.mosaic.table({
-    inElement: '#myTable',
-    schema: {
-      properties: {
-        firstName: {
-          type: 'string',
-          title: 'First name'
-        },
-        surname: {
-          type: 'string',
-          title: 'Surname'
-        },
-        email: {
-          type: 'string',
-          title: 'Email'
+  // document.addEventListener('DOMContentLoaded', function () {
+    new window.mosaic.Table(document.getElementById('myTable'), {
+      schema: {
+        properties: {
+          _id: {
+            type: 'string',
+            title: 'Id'
+          },
+          firstName: {
+            type: 'string',
+            title: 'First name'
+          },
+          surname: {
+            type: 'string',
+            title: 'Surname'
+          },
+          company: {
+            type: 'string',
+            title: 'Company'
+          },
+          email: {
+            type: 'string',
+            title: 'Email'
+          }
         }
-      }
-    },
-    data: [
-      { firstName: 'Matt', surname: 'Levy', 'email': 'ducksoupdev@gmail.com' },
-      { firstName: 'Vikki', surname: 'Levy', 'email': 'vikkilevy68@gmail.com' },
-      { firstName: 'Katie', surname: 'Levy', 'email': 'klevy@test.com' }
-    ]
-  })
-})
+      },
+      size: 25,
+      data: 'http://127.0.0.1:8080/test/rows-186.json'
+      // data: {
+      //   total: 3,
+      //   rows: [
+      //     {firstName: 'Matt', surname: 'Levy', 'email': 'ducksoupdev@gmail.com'},
+      //     {firstName: 'Vikki', surname: 'Levy', 'email': 'vikkilevy68@gmail.com'},
+      //     {firstName: 'Katie', surname: 'Levy', 'email': 'klevy@test.com'}
+      //   ]
+      // }
+    })
+  // })
 </script>
 </body>
 </html>

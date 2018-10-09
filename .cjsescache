@@ -1,0 +1,6 @@
+{
+  "node_modules/ajv/lib/compile/formats.js": null,
+  "node_modules/ajv/lib/compile/ucs2length.js": null,
+  "node_modules/fast-deep-equal/index.js": null,
+  "src/gen/temp_validate.js": null
+}

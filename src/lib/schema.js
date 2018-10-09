@@ -1,10 +1,10 @@
-import validate from '../gen/validate.js'
+import validate from '../gen/validate'
 
 export function validateOptions (options) {
   const valid = validate(options)
   if (!valid) {
     console.error(validate.errors)
-    throw new Error('Options are not valid!')
+    throw new Error('Invalid options supplied!')
   }
 }
 

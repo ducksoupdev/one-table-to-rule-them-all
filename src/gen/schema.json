@@ -2,25 +2,52 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
   "properties": {
-    "inElement": {
-      "oneOf": [
-        { "type": "string" },
-        { "type": "object" }
-      ]
-    },
     "enableHover": { "type": "boolean" },
     "schema": {
       "oneOf": [
-        { "type": "string" },
+        {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https?://"
+        },
         { "type": "object" }
       ]
     },
     "data": {
       "oneOf": [
-        { "type": "string" },
-        { "type": "array" }
+        {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https?://"
+        },
+        { "type": "object",
+          "properties": {
+            "total": {
+              "type": "integer"
+            },
+            "rows": {
+              "type": "array"
+            }
+          }
+        }
+      ]
+    },
+    "start": {
+      "type": "integer"
+    },
+    "size": {
+      "oneOf": [
+        {
+          "type": "number", "minimum": 10, "maximum": 10
+        },
+        {
+          "type": "number", "minimum": 25, "maximum": 25
+        },
+        {
+          "type": "number", "minimum": 50, "maximum": 50
+        }
       ]
     }
   },
-  "required": ["inElement", "data"]
+  "required": ["schema", "data"]
 }

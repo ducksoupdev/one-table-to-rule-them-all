@@ -1,6 +1,6 @@
 /* global Node */
-import { flatten } from './flatten.js'
-import { forEach } from './foreach.js'
+import { flatten } from './flatten'
+import { forEach } from './foreach'
 
 const h = (tag, attrs, ...children) => {
   const elm = document.createElement(tag)

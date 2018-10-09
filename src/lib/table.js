@@ -1,12 +1,30 @@
-import { initState } from './state.js'
-import { initPagination } from './pagination.js'
+import { Store } from './store'
+import { validateOptions } from './schema'
+import { render } from './render'
+import { loadData } from './load-data'
 
-export function initTable (options) {
-  // create state
-  const state = initState(options)
+export class Table {
+  constructor (element, options) {
+    validateOptions(options)
+    this.element = element
+    const opts = {
+      enableHover: false
+    }
+    Object.assign(opts, options)
+    this.store = new Store(opts)
+    this.store.registerObserver(this)
+    this.render()
 
-  // create pagination
-  const pagination = initPagination(state)
+    if (typeof options.data === 'string' && /^https?:\/\//i.test(options.data)) {
+      loadData(this.store)
+    }
+  }
 
-  return state
+  update () {
+    this.render()
+  }
+
+  render () {
+    render(this.element, this.store)
+  }
 }

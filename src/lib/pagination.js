@@ -1,4 +1,4 @@
-import { render } from './render.js'
+import { render } from './render'
 
 export function initPagination (state) {
   const ps = document.querySelectorAll('select[name=pagination]')
