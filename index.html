@@ -17,10 +17,16 @@
         <div id="myTable"></div>
     </div>
 </div>
-<script type="module" src="dist/table.esm.js"></script>
-<script type="module">
-  // document.addEventListener('DOMContentLoaded', function () {
+<script src="https://unpkg.com/es6-promise@4.2.5/dist/es6-promise.auto.min.js"></script>
+<script src="https://unpkg.com/whatwg-fetch@3.0.0/dist/fetch.umd.js"></script>
+<script src="dist/table.umd.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
     new window.mosaic.Table(document.getElementById('myTable'), {
+      hover: true,
+      bordered: true,
+      fixedHeight: true,
+      footers: true,
       schema: {
         properties: {
           _id: {
@@ -45,18 +51,69 @@
           }
         }
       },
-      size: 25,
-      data: 'http://127.0.0.1:8080/test/rows-186.json'
-      // data: {
-      //   total: 3,
-      //   rows: [
-      //     {firstName: 'Matt', surname: 'Levy', 'email': 'ducksoupdev@gmail.com'},
-      //     {firstName: 'Vikki', surname: 'Levy', 'email': 'vikkilevy68@gmail.com'},
-      //     {firstName: 'Katie', surname: 'Levy', 'email': 'klevy@test.com'}
-      //   ]
-      // }
+      size: 10,
+      data: function () {
+        return window.fetch('http://127.0.0.1:8080/test/rows-186.json')
+          .then(function(response) {
+            return response.json()
+          })
+
+        // return Promise.resolve({
+        //   total: 3,
+        //   rows: [
+        //     {
+        //       "_id": "5bbcb817af0b41d3a71216c0",
+        //       "firstName": "Candace",
+        //       "surname": "Pacheco",
+        //       "company": "CALLFLEX",
+        //       "email": "candace.pacheco@callflex.me"
+        //     },
+        //     {
+        //       "_id": "5bbcb817f5db2f5ab0c37dc7",
+        //       "firstName": "Mayra",
+        //       "surname": "Larsen",
+        //       "company": "MEDMEX",
+        //       "email": "mayra.larsen@medmex.io"
+        //     },
+        //     {
+        //       "_id": "5bbcb81748ba9a08da356d5d",
+        //       "firstName": "Blankenship",
+        //       "surname": "Ramsey",
+        //       "company": "ACUMENTOR",
+        //       "email": "blankenship.ramsey@acumentor.org"
+        //     }
+        //   ]
+        // })
+
+        // return {
+        //   total: 3,
+        //   rows: [
+        //     {
+        //       "_id": "5bbcb817af0b41d3a71216c0",
+        //       "firstName": "Candace",
+        //       "surname": "Pacheco",
+        //       "company": "CALLFLEX",
+        //       "email": "candace.pacheco@callflex.me"
+        //     },
+        //     {
+        //       "_id": "5bbcb817f5db2f5ab0c37dc7",
+        //       "firstName": "Mayra",
+        //       "surname": "Larsen",
+        //       "company": "MEDMEX",
+        //       "email": "mayra.larsen@medmex.io"
+        //     },
+        //     {
+        //       "_id": "5bbcb81748ba9a08da356d5d",
+        //       "firstName": "Blankenship",
+        //       "surname": "Ramsey",
+        //       "company": "ACUMENTOR",
+        //       "email": "blankenship.ramsey@acumentor.org"
+        //     }
+        //   ]
+        // }
+      }
     })
-  // })
+  })
 </script>
 </body>
 </html>

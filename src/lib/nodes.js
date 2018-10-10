@@ -1,136 +1,97 @@
-// /** @jsx h */
+/** @jsx h */
 import { h } from './jsx-dom.js'
 import { getTitle } from './schema.js'
+import { ClassBuilder } from './class-builder'
 
-// export const createNode = (d) => (
-//   <tr>
-//     {Object.keys(d).map(k => <td>{d[k]}</td>)}
-//   </tr>
-// )
-
-export const createTableBodyNode = d => h(
-  'tr',
-  null,
-  ...Object.keys(d).map(k => h(
-    'td',
-    null,
-    d[k]
-  ))
+export const createTableBodyNode = d => (
+  <tr>
+    {Object.keys(d).map(k => <td>{d[k]}</td>)}
+  </tr>
 )
 
-export const createEmptyTableColumnNode = d => h(
-  'tr',
-  null,
-  ...d.map(k => h(
-    'td',
-    null,
-    ''
-  ))
+export const createEmptyTableColumnNode = d => (
+  <tr>
+    {d.map(k => <td />)}
+  </tr>
 )
 
-export const createTableHeadNode = (s, d) => h(
-  'tr',
-  null,
-  ...d.map(k => h(
-    'th',
-    null,
-    getTitle(k, s[k])
-  ))
+const createTitle = (f, k, s) => {
+  if (f) {
+    return <div>{getTitle(k, s[k])}</div>
+  } else {
+    return getTitle(k, s[k])
+  }
+}
+
+export const createTableHeadNode = (f, s, d) => (
+  <tr>
+    {d.map(k => <th>{createTitle(f, k, s)}</th>)}
+  </tr>
 )
 
-export const createTableEmptyRowNode = (l, cls = {}, c = '') => h(
-  'tr',
-  null,
-  h(
-    'td',
-    { colspan: `${l}`, ...cls },
-    c
-  )
+export const createTableFootNode = (f, s, d) => (
+  <tr>
+    {d.map(k => <th>{createTitle(f, k, s)}</th>)}
+  </tr>
 )
 
-export const createTableNode = s => h(
-  'table',
-  { class: `table${s.enableHover ? ' table-hover' : ''}` },
-  h(
-    'thead',
-    null
-  ),
-  h(
-    'tbody',
-    null
-  ),
-  h(
-    'tfoot',
-    null
-  )
+export const createEmptyTableRowNode = (l, cls = {}, c = '') => (
+  <tr>
+    <td colspan={l} {...cls}>{c}</td>
+  </tr>
 )
 
-export const createPaginationNode = s => h(
-  'nav',
-  { ariaLabel: 'Table pagination' },
-  h(
-    'ul',
-    { class: 'pagination' },
-    h(
-      'li',
-      { class: 'page-item' },
-      h(
-        'a',
-        { class: 'page-link', href: '#' },
-        'Previous'
-      )
-    ),
-    h(
-      'li',
-      { class: 'page-item' },
-      h(
-        'a',
-        { class: 'page-link', href: '#' },
-        '1'
-      )
-    ),
-    h(
-      'li',
-      { class: 'page-item' },
-      h(
-        'a',
-        { class: 'page-link', href: '#' },
-        'Next'
-      )
-    )
-  )
+const createFixedHeightTable = s => (
+  <div class={`tfh-c tfh-h tfh-f${s.footers ? ' mb-3' : ''}`}>
+    <div class='tfh'>
+      {createDefaultTable(s)}
+    </div>
+  </div>
 )
 
-export const createDisplayedEntriesNode = s => h(
-  'div',
-  { class: 'mb-2 w-25' },
-  h(
-    'span',
-    { class: 'mr-1' },
-    'Display'
-  ),
-  h(
-    'select',
-    { class: 'form-control d-inline-block w-auto', size: 1 },
-    h(
-      'option',
-      { value: '10', selected: s.size === 10 },
-      '10'
-    ),
-    h(
-      'option',
-      { value: '25', selected: s.size === 25 },
-      '25'
-    ),
-    h(
-      'option',
-      { value: '50', selected: s.size === 50 },
-      '50'
-    )
-  ),
-  h(
-    'span',
-    { class: 'ml-1' },
-    'rows'
-  )
+const buildTableClasses = s => {
+  const cb = new ClassBuilder()
+  s.striped && cb.addClass('table-striped')
+  s.bordered && cb.addClass('table-bordered')
+  s.dark && cb.addClass('table-dark')
+  s.hover && cb.addClass('table-hover')
+  return cb.build()
+}
+
+const createDefaultTable = s => (
+  <table class={`table ${buildTableClasses(s)}`}>
+    <thead />
+    <tbody />
+    {s.footers ? <tfoot /> : ''}
+  </table>
+)
+
+export const createTableNode = s => s.fixedHeight ? createFixedHeightTable(s) : createDefaultTable(s)
+
+export const createPaginationNode = s => (
+  <nav aria-label='Table pagination' class='pagination-container'>
+    <ul class='pagination'>
+      <li class='page-item'>
+        <a class='page-link' href='#'>Previous</a>
+      </li>
+      <li class='page-item'>
+        <a class='page-link' href='#'>1</a>
+      </li>
+      <li class='page-item'>
+        <a class='page-link' href='#'>Next</a>
+      </li>
+    </ul>
+  </nav>
+)
+
+export const createDisplayedEntriesNode = s => (
+  <div class='mb-2 w-25'>
+    <span class='mr-1'>Display</span>
+    <select class='form-control d-inline-block w-auto' size='1'>
+      <option value='10' selected={s.size === 10}>10</option>
+      <option value='25' selected={s.size === 25}>25</option>
+      <option value='50' selected={s.size === 50}>50</option>
+    </select>
+    <span class='ml-1'>rows</span>
+  </div>
 )

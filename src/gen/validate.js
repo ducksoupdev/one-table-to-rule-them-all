@@ -165,15 +165,15 @@ var validate = (function() {
     if ((data && typeof data === "object" && !Array.isArray(data))) {
       {
         var valid1 = true;
-        if (data.enableHover === undefined) {
+        if (data.striped === undefined) {
           valid1 = true;
         } else {
           var errs_1 = errors;
-          if (typeof data.enableHover !== "boolean") {
+          if (typeof data.striped !== "boolean") {
             validate.errors = [{
               keyword: 'type',
-              dataPath: (dataPath || '') + '.enableHover',
-              schemaPath: '#/properties/enableHover/type',
+              dataPath: (dataPath || '') + '.striped',
+              schemaPath: '#/properties/striped/type',
               params: {
                 type: 'boolean'
               },
@@ -184,517 +184,490 @@ var validate = (function() {
           var valid1 = errors === errs_1;
         }
         if (valid1) {
-          var data1 = data.schema;
-          if (data1 === undefined) {
-            valid1 = false;
-            validate.errors = [{
-              keyword: 'required',
-              dataPath: (dataPath || '') + "",
-              schemaPath: '#/required',
-              params: {
-                missingProperty: 'schema'
-              },
-              message: 'should have required property \'schema\''
-            }];
-            return false;
+          if (data.dark === undefined) {
+            valid1 = true;
           } else {
             var errs_1 = errors;
-            var errs__1 = errors,
-              prevValid1 = false,
-              valid1 = false,
-              passingSchemas1 = null;
-            var errs_2 = errors;
-            if (errors === errs_2) {
-              if (typeof data1 === "string") {
-                if (!pattern0.test(data1)) {
-                  var err = {
-                    keyword: 'pattern',
-                    dataPath: (dataPath || '') + '.schema',
-                    schemaPath: '#/properties/schema/oneOf/0/pattern',
-                    params: {
-                      pattern: '^https?://'
-                    },
-                    message: 'should match pattern "^https?://"'
-                  };
-                  if (vErrors === null) vErrors = [err];
-                  else vErrors.push(err);
-                  errors++;
-                } else {
-                  if (!formats$1.uri.test(data1)) {
-                    var err = {
-                      keyword: 'format',
-                      dataPath: (dataPath || '') + '.schema',
-                      schemaPath: '#/properties/schema/oneOf/0/format',
-                      params: {
-                        format: 'uri'
-                      },
-                      message: 'should match format "uri"'
-                    };
-                    if (vErrors === null) vErrors = [err];
-                    else vErrors.push(err);
-                    errors++;
-                  }
-                }
-              } else {
-                var err = {
-                  keyword: 'type',
-                  dataPath: (dataPath || '') + '.schema',
-                  schemaPath: '#/properties/schema/oneOf/0/type',
-                  params: {
-                    type: 'string'
-                  },
-                  message: 'should be string'
-                };
-                if (vErrors === null) vErrors = [err];
-                else vErrors.push(err);
-                errors++;
-              }
-            }
-            var valid2 = errors === errs_2;
-            if (valid2) {
-              valid1 = prevValid1 = true;
-              passingSchemas1 = 0;
-            }
-            var errs_2 = errors;
-            if ((!data1 || typeof data1 !== "object" || Array.isArray(data1))) {
-              var err = {
+            if (typeof data.dark !== "boolean") {
+              validate.errors = [{
                 keyword: 'type',
-                dataPath: (dataPath || '') + '.schema',
-                schemaPath: '#/properties/schema/oneOf/1/type',
+                dataPath: (dataPath || '') + '.dark',
+                schemaPath: '#/properties/dark/type',
                 params: {
-                  type: 'object'
+                  type: 'boolean'
                 },
-                message: 'should be object'
-              };
-              if (vErrors === null) vErrors = [err];
-              else vErrors.push(err);
-              errors++;
-            }
-            var valid2 = errors === errs_2;
-            if (valid2 && prevValid1) {
-              valid1 = false;
-              passingSchemas1 = [passingSchemas1, 1];
-            } else {
-              if (valid2) {
-                valid1 = prevValid1 = true;
-                passingSchemas1 = 1;
-              }
-            }
-            if (!valid1) {
-              var err = {
-                keyword: 'oneOf',
-                dataPath: (dataPath || '') + '.schema',
-                schemaPath: '#/properties/schema/oneOf',
-                params: {
-                  passingSchemas: passingSchemas1
-                },
-                message: 'should match exactly one schema in oneOf'
-              };
-              if (vErrors === null) vErrors = [err];
-              else vErrors.push(err);
-              errors++;
-              validate.errors = vErrors;
+                message: 'should be boolean'
+              }];
               return false;
-            } else {
-              errors = errs__1;
-              if (vErrors !== null) {
-                if (errs__1) vErrors.length = errs__1;
-                else vErrors = null;
-              }
             }
             var valid1 = errors === errs_1;
           }
           if (valid1) {
-            var data1 = data.data;
-            if (data1 === undefined) {
-              valid1 = false;
-              validate.errors = [{
-                keyword: 'required',
-                dataPath: (dataPath || '') + "",
-                schemaPath: '#/required',
-                params: {
-                  missingProperty: 'data'
-                },
-                message: 'should have required property \'data\''
-              }];
-              return false;
+            if (data.bordered === undefined) {
+              valid1 = true;
             } else {
               var errs_1 = errors;
-              var errs__1 = errors,
-                prevValid1 = false,
-                valid1 = false,
-                passingSchemas1 = null;
-              var errs_2 = errors;
-              if (errors === errs_2) {
-                if (typeof data1 === "string") {
-                  if (!pattern0.test(data1)) {
-                    var err = {
-                      keyword: 'pattern',
-                      dataPath: (dataPath || '') + '.data',
-                      schemaPath: '#/properties/data/oneOf/0/pattern',
-                      params: {
-                        pattern: '^https?://'
-                      },
-                      message: 'should match pattern "^https?://"'
-                    };
-                    if (vErrors === null) vErrors = [err];
-                    else vErrors.push(err);
-                    errors++;
-                  } else {
-                    if (!formats$1.uri.test(data1)) {
-                      var err = {
-                        keyword: 'format',
-                        dataPath: (dataPath || '') + '.data',
-                        schemaPath: '#/properties/data/oneOf/0/format',
-                        params: {
-                          format: 'uri'
-                        },
-                        message: 'should match format "uri"'
-                      };
-                      if (vErrors === null) vErrors = [err];
-                      else vErrors.push(err);
-                      errors++;
-                    }
-                  }
-                } else {
-                  var err = {
-                    keyword: 'type',
-                    dataPath: (dataPath || '') + '.data',
-                    schemaPath: '#/properties/data/oneOf/0/type',
-                    params: {
-                      type: 'string'
-                    },
-                    message: 'should be string'
-                  };
-                  if (vErrors === null) vErrors = [err];
-                  else vErrors.push(err);
-                  errors++;
-                }
-              }
-              var valid2 = errors === errs_2;
-              if (valid2) {
-                valid1 = prevValid1 = true;
-                passingSchemas1 = 0;
-              }
-              var errs_2 = errors;
-              if ((data1 && typeof data1 === "object" && !Array.isArray(data1))) {
-                var valid3 = true;
-                var data2 = data1.total;
-                if (data2 === undefined) {
-                  valid3 = true;
-                } else {
-                  var errs_3 = errors;
-                  if ((typeof data2 !== "number" || (data2 % 1) || data2 !== data2)) {
-                    var err = {
-                      keyword: 'type',
-                      dataPath: (dataPath || '') + '.data.total',
-                      schemaPath: '#/properties/data/oneOf/1/properties/total/type',
-                      params: {
-                        type: 'integer'
-                      },
-                      message: 'should be integer'
-                    };
-                    if (vErrors === null) vErrors = [err];
-                    else vErrors.push(err);
-                    errors++;
-                  }
-                  var valid3 = errors === errs_3;
-                }
-                if (valid3) {
-                  if (data1.rows === undefined) {
-                    valid3 = true;
-                  } else {
-                    var errs_3 = errors;
-                    if (!Array.isArray(data1.rows)) {
-                      var err = {
-                        keyword: 'type',
-                        dataPath: (dataPath || '') + '.data.rows',
-                        schemaPath: '#/properties/data/oneOf/1/properties/rows/type',
-                        params: {
-                          type: 'array'
-                        },
-                        message: 'should be array'
-                      };
-                      if (vErrors === null) vErrors = [err];
-                      else vErrors.push(err);
-                      errors++;
-                    }
-                    var valid3 = errors === errs_3;
-                  }
-                }
-              } else {
-                var err = {
+              if (typeof data.bordered !== "boolean") {
+                validate.errors = [{
                   keyword: 'type',
-                  dataPath: (dataPath || '') + '.data',
-                  schemaPath: '#/properties/data/oneOf/1/type',
+                  dataPath: (dataPath || '') + '.bordered',
+                  schemaPath: '#/properties/bordered/type',
                   params: {
-                    type: 'object'
+                    type: 'boolean'
                   },
-                  message: 'should be object'
-                };
-                if (vErrors === null) vErrors = [err];
-                else vErrors.push(err);
-                errors++;
-              }
-              var valid2 = errors === errs_2;
-              if (valid2 && prevValid1) {
-                valid1 = false;
-                passingSchemas1 = [passingSchemas1, 1];
-              } else {
-                if (valid2) {
-                  valid1 = prevValid1 = true;
-                  passingSchemas1 = 1;
-                }
-              }
-              if (!valid1) {
-                var err = {
-                  keyword: 'oneOf',
-                  dataPath: (dataPath || '') + '.data',
-                  schemaPath: '#/properties/data/oneOf',
-                  params: {
-                    passingSchemas: passingSchemas1
-                  },
-                  message: 'should match exactly one schema in oneOf'
-                };
-                if (vErrors === null) vErrors = [err];
-                else vErrors.push(err);
-                errors++;
-                validate.errors = vErrors;
+                  message: 'should be boolean'
+                }];
                 return false;
-              } else {
-                errors = errs__1;
-                if (vErrors !== null) {
-                  if (errs__1) vErrors.length = errs__1;
-                  else vErrors = null;
-                }
               }
               var valid1 = errors === errs_1;
             }
             if (valid1) {
-              var data1 = data.start;
-              if (data1 === undefined) {
+              if (data.hover === undefined) {
                 valid1 = true;
               } else {
                 var errs_1 = errors;
-                if ((typeof data1 !== "number" || (data1 % 1) || data1 !== data1)) {
+                if (typeof data.hover !== "boolean") {
                   validate.errors = [{
                     keyword: 'type',
-                    dataPath: (dataPath || '') + '.start',
-                    schemaPath: '#/properties/start/type',
+                    dataPath: (dataPath || '') + '.hover',
+                    schemaPath: '#/properties/hover/type',
                     params: {
-                      type: 'integer'
+                      type: 'boolean'
                     },
-                    message: 'should be integer'
+                    message: 'should be boolean'
                   }];
                   return false;
                 }
                 var valid1 = errors === errs_1;
               }
               if (valid1) {
-                var data1 = data.size;
-                if (data1 === undefined) {
+                if (data.fixedHeight === undefined) {
                   valid1 = true;
                 } else {
                   var errs_1 = errors;
-                  var errs__1 = errors,
-                    prevValid1 = false,
-                    valid1 = false,
-                    passingSchemas1 = null;
-                  var errs_2 = errors;
-                  if (typeof data1 === "number") {
-                    if (data1 > 10 || data1 !== data1) {
-                      var err = {
-                        keyword: 'maximum',
-                        dataPath: (dataPath || '') + '.size',
-                        schemaPath: '#/properties/size/oneOf/0/maximum',
-                        params: {
-                          comparison: '<=',
-                          limit: 10,
-                          exclusive: false
-                        },
-                        message: 'should be <= 10'
-                      };
-                      if (vErrors === null) vErrors = [err];
-                      else vErrors.push(err);
-                      errors++;
-                    } else {
-                      if (data1 < 10 || data1 !== data1) {
-                        var err = {
-                          keyword: 'minimum',
-                          dataPath: (dataPath || '') + '.size',
-                          schemaPath: '#/properties/size/oneOf/0/minimum',
-                          params: {
-                            comparison: '>=',
-                            limit: 10,
-                            exclusive: false
-                          },
-                          message: 'should be >= 10'
-                        };
-                        if (vErrors === null) vErrors = [err];
-                        else vErrors.push(err);
-                        errors++;
-                      }
-                    }
-                  } else {
-                    var err = {
+                  if (typeof data.fixedHeight !== "boolean") {
+                    validate.errors = [{
                       keyword: 'type',
-                      dataPath: (dataPath || '') + '.size',
-                      schemaPath: '#/properties/size/oneOf/0/type',
+                      dataPath: (dataPath || '') + '.fixedHeight',
+                      schemaPath: '#/properties/fixedHeight/type',
                       params: {
-                        type: 'number'
+                        type: 'boolean'
                       },
-                      message: 'should be number'
-                    };
-                    if (vErrors === null) vErrors = [err];
-                    else vErrors.push(err);
-                    errors++;
-                  }
-                  var valid2 = errors === errs_2;
-                  if (valid2) {
-                    valid1 = prevValid1 = true;
-                    passingSchemas1 = 0;
-                  }
-                  var errs_2 = errors;
-                  if (typeof data1 === "number") {
-                    if (data1 > 25 || data1 !== data1) {
-                      var err = {
-                        keyword: 'maximum',
-                        dataPath: (dataPath || '') + '.size',
-                        schemaPath: '#/properties/size/oneOf/1/maximum',
-                        params: {
-                          comparison: '<=',
-                          limit: 25,
-                          exclusive: false
-                        },
-                        message: 'should be <= 25'
-                      };
-                      if (vErrors === null) vErrors = [err];
-                      else vErrors.push(err);
-                      errors++;
-                    } else {
-                      if (data1 < 25 || data1 !== data1) {
-                        var err = {
-                          keyword: 'minimum',
-                          dataPath: (dataPath || '') + '.size',
-                          schemaPath: '#/properties/size/oneOf/1/minimum',
-                          params: {
-                            comparison: '>=',
-                            limit: 25,
-                            exclusive: false
-                          },
-                          message: 'should be >= 25'
-                        };
-                        if (vErrors === null) vErrors = [err];
-                        else vErrors.push(err);
-                        errors++;
-                      }
-                    }
-                  } else {
-                    var err = {
-                      keyword: 'type',
-                      dataPath: (dataPath || '') + '.size',
-                      schemaPath: '#/properties/size/oneOf/1/type',
-                      params: {
-                        type: 'number'
-                      },
-                      message: 'should be number'
-                    };
-                    if (vErrors === null) vErrors = [err];
-                    else vErrors.push(err);
-                    errors++;
-                  }
-                  var valid2 = errors === errs_2;
-                  if (valid2 && prevValid1) {
-                    valid1 = false;
-                    passingSchemas1 = [passingSchemas1, 1];
-                  } else {
-                    if (valid2) {
-                      valid1 = prevValid1 = true;
-                      passingSchemas1 = 1;
-                    }
-                    var errs_2 = errors;
-                    if (typeof data1 === "number") {
-                      if (data1 > 50 || data1 !== data1) {
-                        var err = {
-                          keyword: 'maximum',
-                          dataPath: (dataPath || '') + '.size',
-                          schemaPath: '#/properties/size/oneOf/2/maximum',
-                          params: {
-                            comparison: '<=',
-                            limit: 50,
-                            exclusive: false
-                          },
-                          message: 'should be <= 50'
-                        };
-                        if (vErrors === null) vErrors = [err];
-                        else vErrors.push(err);
-                        errors++;
-                      } else {
-                        if (data1 < 50 || data1 !== data1) {
-                          var err = {
-                            keyword: 'minimum',
-                            dataPath: (dataPath || '') + '.size',
-                            schemaPath: '#/properties/size/oneOf/2/minimum',
-                            params: {
-                              comparison: '>=',
-                              limit: 50,
-                              exclusive: false
-                            },
-                            message: 'should be >= 50'
-                          };
-                          if (vErrors === null) vErrors = [err];
-                          else vErrors.push(err);
-                          errors++;
-                        }
-                      }
-                    } else {
-                      var err = {
-                        keyword: 'type',
-                        dataPath: (dataPath || '') + '.size',
-                        schemaPath: '#/properties/size/oneOf/2/type',
-                        params: {
-                          type: 'number'
-                        },
-                        message: 'should be number'
-                      };
-                      if (vErrors === null) vErrors = [err];
-                      else vErrors.push(err);
-                      errors++;
-                    }
-                    var valid2 = errors === errs_2;
-                    if (valid2 && prevValid1) {
-                      valid1 = false;
-                      passingSchemas1 = [passingSchemas1, 2];
-                    } else {
-                      if (valid2) {
-                        valid1 = prevValid1 = true;
-                        passingSchemas1 = 2;
-                      }
-                    }
-                  }
-                  if (!valid1) {
-                    var err = {
-                      keyword: 'oneOf',
-                      dataPath: (dataPath || '') + '.size',
-                      schemaPath: '#/properties/size/oneOf',
-                      params: {
-                        passingSchemas: passingSchemas1
-                      },
-                      message: 'should match exactly one schema in oneOf'
-                    };
-                    if (vErrors === null) vErrors = [err];
-                    else vErrors.push(err);
-                    errors++;
-                    validate.errors = vErrors;
+                      message: 'should be boolean'
+                    }];
                     return false;
-                  } else {
-                    errors = errs__1;
-                    if (vErrors !== null) {
-                      if (errs__1) vErrors.length = errs__1;
-                      else vErrors = null;
-                    }
                   }
                   var valid1 = errors === errs_1;
+                }
+                if (valid1) {
+                  if (data.headers === undefined) {
+                    valid1 = true;
+                  } else {
+                    var errs_1 = errors;
+                    if (typeof data.headers !== "boolean") {
+                      validate.errors = [{
+                        keyword: 'type',
+                        dataPath: (dataPath || '') + '.headers',
+                        schemaPath: '#/properties/headers/type',
+                        params: {
+                          type: 'boolean'
+                        },
+                        message: 'should be boolean'
+                      }];
+                      return false;
+                    }
+                    var valid1 = errors === errs_1;
+                  }
+                  if (valid1) {
+                    if (data.footers === undefined) {
+                      valid1 = true;
+                    } else {
+                      var errs_1 = errors;
+                      if (typeof data.footers !== "boolean") {
+                        validate.errors = [{
+                          keyword: 'type',
+                          dataPath: (dataPath || '') + '.footers',
+                          schemaPath: '#/properties/footers/type',
+                          params: {
+                            type: 'boolean'
+                          },
+                          message: 'should be boolean'
+                        }];
+                        return false;
+                      }
+                      var valid1 = errors === errs_1;
+                    }
+                    if (valid1) {
+                      if (data.displayedEntries === undefined) {
+                        valid1 = true;
+                      } else {
+                        var errs_1 = errors;
+                        if (typeof data.displayedEntries !== "boolean") {
+                          validate.errors = [{
+                            keyword: 'type',
+                            dataPath: (dataPath || '') + '.displayedEntries',
+                            schemaPath: '#/properties/displayedEntries/type',
+                            params: {
+                              type: 'boolean'
+                            },
+                            message: 'should be boolean'
+                          }];
+                          return false;
+                        }
+                        var valid1 = errors === errs_1;
+                      }
+                      if (valid1) {
+                        var data1 = data.schema;
+                        if (data1 === undefined) {
+                          valid1 = false;
+                          validate.errors = [{
+                            keyword: 'required',
+                            dataPath: (dataPath || '') + "",
+                            schemaPath: '#/required',
+                            params: {
+                              missingProperty: 'schema'
+                            },
+                            message: 'should have required property \'schema\''
+                          }];
+                          return false;
+                        } else {
+                          var errs_1 = errors;
+                          var errs__1 = errors,
+                            prevValid1 = false,
+                            valid1 = false,
+                            passingSchemas1 = null;
+                          var errs_2 = errors;
+                          if (errors === errs_2) {
+                            if (typeof data1 === "string") {
+                              if (!pattern0.test(data1)) {
+                                var err = {
+                                  keyword: 'pattern',
+                                  dataPath: (dataPath || '') + '.schema',
+                                  schemaPath: '#/properties/schema/oneOf/0/pattern',
+                                  params: {
+                                    pattern: '^https?://'
+                                  },
+                                  message: 'should match pattern "^https?://"'
+                                };
+                                if (vErrors === null) vErrors = [err];
+                                else vErrors.push(err);
+                                errors++;
+                              } else {
+                                if (!formats$1.uri.test(data1)) {
+                                  var err = {
+                                    keyword: 'format',
+                                    dataPath: (dataPath || '') + '.schema',
+                                    schemaPath: '#/properties/schema/oneOf/0/format',
+                                    params: {
+                                      format: 'uri'
+                                    },
+                                    message: 'should match format "uri"'
+                                  };
+                                  if (vErrors === null) vErrors = [err];
+                                  else vErrors.push(err);
+                                  errors++;
+                                }
+                              }
+                            } else {
+                              var err = {
+                                keyword: 'type',
+                                dataPath: (dataPath || '') + '.schema',
+                                schemaPath: '#/properties/schema/oneOf/0/type',
+                                params: {
+                                  type: 'string'
+                                },
+                                message: 'should be string'
+                              };
+                              if (vErrors === null) vErrors = [err];
+                              else vErrors.push(err);
+                              errors++;
+                            }
+                          }
+                          var valid2 = errors === errs_2;
+                          if (valid2) {
+                            valid1 = prevValid1 = true;
+                            passingSchemas1 = 0;
+                          }
+                          var errs_2 = errors;
+                          if ((!data1 || typeof data1 !== "object" || Array.isArray(data1))) {
+                            var err = {
+                              keyword: 'type',
+                              dataPath: (dataPath || '') + '.schema',
+                              schemaPath: '#/properties/schema/oneOf/1/type',
+                              params: {
+                                type: 'object'
+                              },
+                              message: 'should be object'
+                            };
+                            if (vErrors === null) vErrors = [err];
+                            else vErrors.push(err);
+                            errors++;
+                          }
+                          var valid2 = errors === errs_2;
+                          if (valid2 && prevValid1) {
+                            valid1 = false;
+                            passingSchemas1 = [passingSchemas1, 1];
+                          } else {
+                            if (valid2) {
+                              valid1 = prevValid1 = true;
+                              passingSchemas1 = 1;
+                            }
+                          }
+                          if (!valid1) {
+                            var err = {
+                              keyword: 'oneOf',
+                              dataPath: (dataPath || '') + '.schema',
+                              schemaPath: '#/properties/schema/oneOf',
+                              params: {
+                                passingSchemas: passingSchemas1
+                              },
+                              message: 'should match exactly one schema in oneOf'
+                            };
+                            if (vErrors === null) vErrors = [err];
+                            else vErrors.push(err);
+                            errors++;
+                            validate.errors = vErrors;
+                            return false;
+                          } else {
+                            errors = errs__1;
+                            if (vErrors !== null) {
+                              if (errs__1) vErrors.length = errs__1;
+                              else vErrors = null;
+                            }
+                          }
+                          var valid1 = errors === errs_1;
+                        }
+                        if (valid1) {
+                          var data1 = data.start;
+                          if (data1 === undefined) {
+                            valid1 = true;
+                          } else {
+                            var errs_1 = errors;
+                            if ((typeof data1 !== "number" || (data1 % 1) || data1 !== data1)) {
+                              validate.errors = [{
+                                keyword: 'type',
+                                dataPath: (dataPath || '') + '.start',
+                                schemaPath: '#/properties/start/type',
+                                params: {
+                                  type: 'integer'
+                                },
+                                message: 'should be integer'
+                              }];
+                              return false;
+                            }
+                            var valid1 = errors === errs_1;
+                          }
+                          if (valid1) {
+                            var data1 = data.size;
+                            if (data1 === undefined) {
+                              valid1 = true;
+                            } else {
+                              var errs_1 = errors;
+                              var errs__1 = errors,
+                                prevValid1 = false,
+                                valid1 = false,
+                                passingSchemas1 = null;
+                              var errs_2 = errors;
+                              if (typeof data1 === "number") {
+                                if (data1 > 10 || data1 !== data1) {
+                                  var err = {
+                                    keyword: 'maximum',
+                                    dataPath: (dataPath || '') + '.size',
+                                    schemaPath: '#/properties/size/oneOf/0/maximum',
+                                    params: {
+                                      comparison: '<=',
+                                      limit: 10,
+                                      exclusive: false
+                                    },
+                                    message: 'should be <= 10'
+                                  };
+                                  if (vErrors === null) vErrors = [err];
+                                  else vErrors.push(err);
+                                  errors++;
+                                } else {
+                                  if (data1 < 10 || data1 !== data1) {
+                                    var err = {
+                                      keyword: 'minimum',
+                                      dataPath: (dataPath || '') + '.size',
+                                      schemaPath: '#/properties/size/oneOf/0/minimum',
+                                      params: {
+                                        comparison: '>=',
+                                        limit: 10,
+                                        exclusive: false
+                                      },
+                                      message: 'should be >= 10'
+                                    };
+                                    if (vErrors === null) vErrors = [err];
+                                    else vErrors.push(err);
+                                    errors++;
+                                  }
+                                }
+                              } else {
+                                var err = {
+                                  keyword: 'type',
+                                  dataPath: (dataPath || '') + '.size',
+                                  schemaPath: '#/properties/size/oneOf/0/type',
+                                  params: {
+                                    type: 'number'
+                                  },
+                                  message: 'should be number'
+                                };
+                                if (vErrors === null) vErrors = [err];
+                                else vErrors.push(err);
+                                errors++;
+                              }
+                              var valid2 = errors === errs_2;
+                              if (valid2) {
+                                valid1 = prevValid1 = true;
+                                passingSchemas1 = 0;
+                              }
+                              var errs_2 = errors;
+                              if (typeof data1 === "number") {
+                                if (data1 > 25 || data1 !== data1) {
+                                  var err = {
+                                    keyword: 'maximum',
+                                    dataPath: (dataPath || '') + '.size',
+                                    schemaPath: '#/properties/size/oneOf/1/maximum',
+                                    params: {
+                                      comparison: '<=',
+                                      limit: 25,
+                                      exclusive: false
+                                    },
+                                    message: 'should be <= 25'
+                                  };
+                                  if (vErrors === null) vErrors = [err];
+                                  else vErrors.push(err);
+                                  errors++;
+                                } else {
+                                  if (data1 < 25 || data1 !== data1) {
+                                    var err = {
+                                      keyword: 'minimum',
+                                      dataPath: (dataPath || '') + '.size',
+                                      schemaPath: '#/properties/size/oneOf/1/minimum',
+                                      params: {
+                                        comparison: '>=',
+                                        limit: 25,
+                                        exclusive: false
+                                      },
+                                      message: 'should be >= 25'
+                                    };
+                                    if (vErrors === null) vErrors = [err];
+                                    else vErrors.push(err);
+                                    errors++;
+                                  }
+                                }
+                              } else {
+                                var err = {
+                                  keyword: 'type',
+                                  dataPath: (dataPath || '') + '.size',
+                                  schemaPath: '#/properties/size/oneOf/1/type',
+                                  params: {
+                                    type: 'number'
+                                  },
+                                  message: 'should be number'
+                                };
+                                if (vErrors === null) vErrors = [err];
+                                else vErrors.push(err);
+                                errors++;
+                              }
+                              var valid2 = errors === errs_2;
+                              if (valid2 && prevValid1) {
+                                valid1 = false;
+                                passingSchemas1 = [passingSchemas1, 1];
+                              } else {
+                                if (valid2) {
+                                  valid1 = prevValid1 = true;
+                                  passingSchemas1 = 1;
+                                }
+                                var errs_2 = errors;
+                                if (typeof data1 === "number") {
+                                  if (data1 > 50 || data1 !== data1) {
+                                    var err = {
+                                      keyword: 'maximum',
+                                      dataPath: (dataPath || '') + '.size',
+                                      schemaPath: '#/properties/size/oneOf/2/maximum',
+                                      params: {
+                                        comparison: '<=',
+                                        limit: 50,
+                                        exclusive: false
+                                      },
+                                      message: 'should be <= 50'
+                                    };
+                                    if (vErrors === null) vErrors = [err];
+                                    else vErrors.push(err);
+                                    errors++;
+                                  } else {
+                                    if (data1 < 50 || data1 !== data1) {
+                                      var err = {
+                                        keyword: 'minimum',
+                                        dataPath: (dataPath || '') + '.size',
+                                        schemaPath: '#/properties/size/oneOf/2/minimum',
+                                        params: {
+                                          comparison: '>=',
+                                          limit: 50,
+                                          exclusive: false
+                                        },
+                                        message: 'should be >= 50'
+                                      };
+                                      if (vErrors === null) vErrors = [err];
+                                      else vErrors.push(err);
+                                      errors++;
+                                    }
+                                  }
+                                } else {
+                                  var err = {
+                                    keyword: 'type',
+                                    dataPath: (dataPath || '') + '.size',
+                                    schemaPath: '#/properties/size/oneOf/2/type',
+                                    params: {
+                                      type: 'number'
+                                    },
+                                    message: 'should be number'
+                                  };
+                                  if (vErrors === null) vErrors = [err];
+                                  else vErrors.push(err);
+                                  errors++;
+                                }
+                                var valid2 = errors === errs_2;
+                                if (valid2 && prevValid1) {
+                                  valid1 = false;
+                                  passingSchemas1 = [passingSchemas1, 2];
+                                } else {
+                                  if (valid2) {
+                                    valid1 = prevValid1 = true;
+                                    passingSchemas1 = 2;
+                                  }
+                                }
+                              }
+                              if (!valid1) {
+                                var err = {
+                                  keyword: 'oneOf',
+                                  dataPath: (dataPath || '') + '.size',
+                                  schemaPath: '#/properties/size/oneOf',
+                                  params: {
+                                    passingSchemas: passingSchemas1
+                                  },
+                                  message: 'should match exactly one schema in oneOf'
+                                };
+                                if (vErrors === null) vErrors = [err];
+                                else vErrors.push(err);
+                                errors++;
+                                validate.errors = vErrors;
+                                return false;
+                              } else {
+                                errors = errs__1;
+                                if (vErrors !== null) {
+                                  if (errs__1) vErrors.length = errs__1;
+                                  else vErrors = null;
+                                }
+                              }
+                              var valid1 = errors === errs_1;
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -721,7 +694,28 @@ validate.schema = {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
   "properties": {
-    "enableHover": {
+    "striped": {
+      "type": "boolean"
+    },
+    "dark": {
+      "type": "boolean"
+    },
+    "bordered": {
+      "type": "boolean"
+    },
+    "hover": {
+      "type": "boolean"
+    },
+    "fixedHeight": {
+      "type": "boolean"
+    },
+    "headers": {
+      "type": "boolean"
+    },
+    "footers": {
+      "type": "boolean"
+    },
+    "displayedEntries": {
       "type": "boolean"
     },
     "schema": {
@@ -731,23 +725,6 @@ validate.schema = {
         "pattern": "^https?://"
       }, {
         "type": "object"
-      }]
-    },
-    "data": {
-      "oneOf": [{
-        "type": "string",
-        "format": "uri",
-        "pattern": "^https?://"
-      }, {
-        "type": "object",
-        "properties": {
-          "total": {
-            "type": "integer"
-          },
-          "rows": {
-            "type": "array"
-          }
-        }
       }]
     },
     "start": {
@@ -769,7 +746,7 @@ validate.schema = {
       }]
     }
   },
-  "required": ["schema", "data"]
+  "required": ["schema"]
 };
 validate.errors = null;
 

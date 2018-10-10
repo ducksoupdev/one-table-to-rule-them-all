@@ -1,0 +1,60 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "striped": { "type": "boolean" },
+    "dark": { "type": "boolean" },
+    "bordered": { "type": "boolean" },
+    "hover": { "type": "boolean" },
+    "fixedHeight": { "type": "boolean" },
+    "headers": { "type": "boolean" },
+    "footers": { "type": "boolean" },
+    "displayedEntries": { "type": "boolean" },
+    "schema": {
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https?://"
+        },
+        { "type": "object" }
+      ]
+    },
+    "data": {
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https?://"
+        },
+        { "type": "object",
+          "properties": {
+            "total": {
+              "type": "integer"
+            },
+            "rows": {
+              "type": "array"
+            }
+          }
+        }
+      ]
+    },
+    "start": {
+      "type": "integer"
+    },
+    "size": {
+      "oneOf": [
+        {
+          "type": "number", "minimum": 10, "maximum": 10
+        },
+        {
+          "type": "number", "minimum": 25, "maximum": 25
+        },
+        {
+          "type": "number", "minimum": 50, "maximum": 50
+        }
+      ]
+    }
+  },
+  "required": ["schema", "data"]
+}

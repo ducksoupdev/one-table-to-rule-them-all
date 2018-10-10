@@ -4,10 +4,23 @@ import { createTableBodyNode } from './nodes'
 export class Store {
   constructor (state) {
     this.state = {
-      start: 0,
-      size: 10,
+      striped: false,
+      dark: false,
+      bordered: false,
+      hover: false,
+      fixedHeight: false,
+      headers: true,
+      footers: false,
+      displayedEntries: false,
+      page: 1,
+      size: 50,
       pr: null,
-      rows: null
+      rows: null,
+      tableRendered: false,
+      headRendered: false,
+      footRendered: false,
+      paginationRendered: false,
+      displayedEntriesRendered: false
     }
     this.observers = []
     Object.assign(this.state, state)
@@ -20,12 +33,14 @@ export class Store {
     this.observers.push(observer)
   }
 
-  setState (state) {
+  setState (state, notify = true) {
     Object.assign(this.state, state)
     if (state.data && typeof state.data === 'object') {
       this.createNodes(state.data)
     }
-    this.notifyObservers()
+    if (notify) {
+      this.notifyObservers()
+    }
   }
 
   notifyObservers () {
@@ -35,6 +50,9 @@ export class Store {
   createNodes (data) {
     this.state.pr = {}
     this.state.rows = []
+    if (data.rows.length > this.state.size && data.rows.length < 50) {
+      this.state.size = data.rows.length
+    }
     for (let i = 0; i < data.rows.length; i++) {
       const item = data.rows[i]
       const id = generateId()

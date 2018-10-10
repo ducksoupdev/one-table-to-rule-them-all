@@ -7,17 +7,10 @@ export class Table {
   constructor (element, options) {
     validateOptions(options)
     this.element = element
-    const opts = {
-      enableHover: false
-    }
-    Object.assign(opts, options)
-    this.store = new Store(opts)
+    this.store = new Store(options)
     this.store.registerObserver(this)
     this.render()
-
-    if (typeof options.data === 'string' && /^https?:\/\//i.test(options.data)) {
-      loadData(this.store)
-    }
+    loadData(this.store)
   }
 
   update () {

@@ -1,21 +1,10 @@
-import 'es6-promise/auto'
-import 'whatwg-fetch'
-
 export function loadData (store) {
-  window
-    .fetch(store.state.data, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-    .then(response => response.json())
-    .then(data => {
-      store.setState({
-        data
-      })
-    })
-    .catch(err => {
-      throw err
-    })
+  const dataObj = store.state.data()
+  if (!!dataObj && (typeof dataObj === 'object' || typeof dataObj === 'function') && typeof dataObj.then === 'function') {
+    dataObj.then(data => store.setState({ data }))
+  } else if (!!dataObj && typeof dataObj === 'object') {
+    store.setState({ data: dataObj })
+  } else {
+    throw new Error('Data is not a Promise or object!')
+  }
 }

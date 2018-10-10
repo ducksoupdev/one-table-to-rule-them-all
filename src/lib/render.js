@@ -2,30 +2,30 @@ import {
   createTableHeadNode,
   createTableNode,
   createPaginationNode,
-  createTableEmptyRowNode,
-  createDisplayedEntriesNode
+  createEmptyTableRowNode,
+  createDisplayedEntriesNode, createTableFootNode
 } from './nodes'
 
-let tableRendered = false
-let headRendered = false
-let footRendered = false
-
 function renderHead (element, store) {
-  const thead = element.querySelector('thead')
-  if (thead) {
-    thead.textContent = ''
-    thead.appendChild(createTableHeadNode(store.state.schema.properties, Object.keys(store.state.schema.properties)))
-    renderDisplayEntries(element, store)
-    headRendered = true
+  if (store.state.headers) {
+    const thead = element.querySelector('thead')
+    if (thead) {
+      thead.textContent = ''
+      thead.appendChild(createTableHeadNode(store.state.fixedHeight, store.state.schema.properties, Object.keys(store.state.schema.properties)))
+      renderDisplayEntries(element, store)
+      store.setState({ headRendered: true }, false)
+    }
   }
 }
 
 function renderFoot (element, store) {
-  const tfoot = element.querySelector('tfoot')
-  if (tfoot) {
-    tfoot.textContent = ''
-    tfoot.appendChild(createTableEmptyRowNode(Object.keys(store.state.schema.properties).length))
-    footRendered = true
+  if (store.state.footers) {
+    const tfoot = element.querySelector('tfoot')
+    if (tfoot) {
+      tfoot.textContent = ''
+      tfoot.appendChild(createTableFootNode(store.state.fixedHeight, store.state.schema.properties, Object.keys(store.state.schema.properties)))
+      store.setState({ footRendered: true }, false)
+    }
   }
 }
 
@@ -33,7 +33,7 @@ function renderTable (element, store) {
   const tn = createTableNode(store.state)
   element.textContent = ''
   element.appendChild(tn)
-  tableRendered = true
+  store.setState({ tableRendered: true }, false)
 }
 
 function renderBody (element, store) {
@@ -44,50 +44,61 @@ function renderBody (element, store) {
     pd.forEach(d => tbody.appendChild(d))
   } else {
     tbody.textContent = ''
-    tbody.appendChild(createTableEmptyRowNode(Object.keys(store.state.schema.properties).length, { class: 'text-center' }, 'Loading...'))
+    tbody.appendChild(createEmptyTableRowNode(Object.keys(store.state.schema.properties).length, { class: 'text-center' }, 'Loading...'))
   }
 }
 
 function renderPagination (element, store) {
   if (store.state.rows && store.state.rows.length > store.state.size) {
-    const pg = createPaginationNode(store.state)
-    const pgc = element.querySelector('tfoot > nav')
-    const tfoot = element.querySelector('tfoot > tr > td')
-    if (pgc) {
-      pgc.remove()
+    const epg = element.querySelector('nav.pagination-container')
+    if (epg) {
+      epg.remove()
     }
-    tfoot.appendChild(pg)
+    const pg = createPaginationNode(store.state)
+    element.appendChild(pg)
+    store.setState({ paginationRendered: true }, false)
   }
 }
 
 function renderDisplayEntries (element, store) {
-  const de = createDisplayedEntriesNode(store.state)
-  const select = de.querySelector('select')
-  select.addEventListener('change', e => {
-    store.setState({
-      size: Number(e.target.value)
+  if (store.state.displayedEntries || (store.state.rows && store.state.rows.length > 50)) {
+    const de = createDisplayedEntriesNode(store.state)
+    const select = de.querySelector('select')
+    select.addEventListener('change', e => {
+      store.setState({
+        size: Number(e.target.value),
+        paginationRendered: false
+      })
     })
-  })
-  element.insertBefore(de, element.firstChild)
+    element.insertBefore(de, element.firstChild)
+    store.setState({ displayedEntriesRendered: true }, false)
+  }
 }
 
 export function render (element, store) {
   console.time('render')
 
-  if (!tableRendered) {
+  if (!store.state.tableRendered) {
     renderTable(element, store)
   }
 
-  if (!headRendered) {
+  if (!store.state.headRendered) {
     renderHead(element, store)
   }
 
-  if (!footRendered) {
+  if (!store.state.displayedEntriesRendered) {
+    renderDisplayEntries(element, store)
+  }
+
+  if (!store.state.footRendered) {
     renderFoot(element, store)
   }
 
+  if (!store.state.paginationRendered) {
+    renderPagination(element, store)
+  }
+
   renderBody(element, store)
-  renderPagination(element, store)
 
   console.timeEnd('render')
 }
