@@ -68,19 +68,25 @@ const createDefaultTable = s => (
 
 export const createTableNode = s => s.fixedHeight ? createFixedHeightTable(s) : createDefaultTable(s)
 
+export const createPaginationList = s => (
+  <ul class='pagination'>
+    <li class={`page-item${!s.isTherePreviousPage ? ' disabled' : ''}`}>
+      <a class='page-link previous-link' href='#' tabindex={!s.isTherePreviousPage ? -1 : 0}>Previous</a>
+    </li>
+    {s.pageIndices.map(i => (
+      <li class='page-item'>
+        <a class='page-link goto-link' href='#' data-page-index={i}>{i + 1}</a>
+      </li>
+    ))}
+    <li class={`page-item${!s.isThereNextPage ? ' disabled' : ''}`}>
+      <a class='page-link next-link' href='#' tabindex={!s.isThereNextPage ? -1 : 0}>Next</a>
+    </li>
+  </ul>
+)
+
 export const createPaginationNode = s => (
   <nav aria-label='Table pagination' class='pagination-container'>
-    <ul class='pagination'>
-      <li class='page-item'>
-        <a class='page-link' href='#'>Previous</a>
-      </li>
-      <li class='page-item'>
-        <a class='page-link' href='#'>1</a>
-      </li>
-      <li class='page-item'>
-        <a class='page-link' href='#'>Next</a>
-      </li>
-    </ul>
+    {createPaginationList(s)}
   </nav>
 )
 

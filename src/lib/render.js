@@ -1,10 +1,10 @@
 import {
   createTableHeadNode,
   createTableNode,
-  createPaginationNode,
   createEmptyTableRowNode,
   createDisplayedEntriesNode, createTableFootNode
 } from './nodes'
+import { createPagination, updatePagination } from './pagination'
 
 function renderHead (element, store) {
   if (store.state.headers) {
@@ -50,13 +50,13 @@ function renderBody (element, store) {
 
 function renderPagination (element, store) {
   if (store.state.rows && store.state.rows.length > store.state.size) {
-    const epg = element.querySelector('nav.pagination-container')
-    if (epg) {
-      epg.remove()
+    if (!store.state.paginationRendered) {
+      const pg = createPagination(store)
+      element.appendChild(pg)
+      store.setState({ paginationRendered: true }, false)
+    } else {
+      updatePagination(store)
     }
-    const pg = createPaginationNode(store.state)
-    element.appendChild(pg)
-    store.setState({ paginationRendered: true }, false)
   }
 }
 
@@ -94,10 +94,7 @@ export function render (element, store) {
     renderFoot(element, store)
   }
 
-  if (!store.state.paginationRendered) {
-    renderPagination(element, store)
-  }
-
+  renderPagination(element, store)
   renderBody(element, store)
 
   console.timeEnd('render')

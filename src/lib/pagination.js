@@ -1,21 +1,41 @@
-import { render } from './render'
+import { createPaginationNode, createPaginationList } from './nodes'
 
-export function initPagination (state) {
-  const ps = document.querySelectorAll('select[name=pagination]')
-  ps.forEach(s => {
-    s.addEventListener('change', e => {
-      state.size = Number(e.target.value)
-      render(state)
-      updatePagination(state.size)
-    })
-  })
-  updatePagination(state.size)
+let pg = null
+
+function getInfo () {
+  return {
+    isTherePreviousPage: false,
+    isThereNextPage: false,
+    pageIndices: [],
+    currentPageIndex: 0
+  }
 }
 
-export function updatePagination (size) {
-  // TODO: save page size - cookie, local storage etc
-  const ps = document.querySelectorAll('select[name=pagination]')
-  ps.forEach(s => {
-    s.value = String(size)
-  })
+function previousClicked (e) {}
+
+function nextClicked (e) {}
+
+function pageClicked (e) {}
+
+export function createPagination (store) {
+  const info = getInfo(store.state)
+  pg = createPaginationNode(info)
+  const pl = pg.querySelector('previous-link')
+  const nl = pg.querySelector('next-link')
+  const gl = pg.querySelectorAll('goto-link')
+  if (info.isTherePreviousPage) {
+    pl.addEventListener('click', previousClicked)
+  }
+  if (info.isThereNextPage) {
+    nl.addEventListener('click', nextClicked)
+  }
+  gl.forEach(l => l.addEventListener('click', pageClicked))
+  return pg
+}
+
+export function updatePagination (store) {
+  const info = getInfo(store.state)
+  const pl = createPaginationList(info)
+  pg.textContent = ''
+  pg.appendChild(pl)
 }
