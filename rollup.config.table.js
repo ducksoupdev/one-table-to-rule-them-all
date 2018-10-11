@@ -29,5 +29,6 @@ const conf = {
 
 export default [
   { ...conf },
+  { ...conf, output: { ...conf.output, file: 'dist/table.esm.js', format: 'es' } },
   { ...conf, output: { ...conf.output, file: 'dist/table.umd.min.js' }, plugins: [...conf.plugins, uglify()] }
 ]
