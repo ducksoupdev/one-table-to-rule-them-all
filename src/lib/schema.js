@@ -8,7 +8,3 @@ export function validateOptions (options) {
     throw new Error('Invalid options supplied!')
   }
 }
-
-export function getTitle (k, v) {
-  return (v && v.title) || k
-}

@@ -1065,162 +1065,274 @@
     return elm;
   };
 
-  function copy(o, to) {
-    to = to || {};
-
-    for (var key in o) {
-      to[key] = o[key];
-    }
-
-    return to;
-  }
-
-  var COERCE_TO_TYPES = toHash(['string', 'number', 'integer', 'boolean', 'null']);
-
-  function toHash(arr) {
-    var hash = {};
-
-    for (var i = 0; i < arr.length; i++) {
-      hash[arr[i]] = true;
-    }
-
-    return hash;
-  }
-
-  var DATE = /^(\d\d\d\d)-(\d\d)-(\d\d)$/;
-  var DAYS = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-  var TIME = /^(\d\d):(\d\d):(\d\d)(\.\d+)?(z|[+-]\d\d:\d\d)?$/i;
-  var HOSTNAME = /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[-0-9a-z]{0,61}[0-9a-z])?)*$/i;
-  var URI = /^(?:[a-z][a-z0-9+\-.]*:)(?:\/?\/(?:(?:[a-z0-9\-._~!$&'()*+,;=:]|%[0-9a-f]{2})*@)?(?:\[(?:(?:(?:(?:[0-9a-f]{1,4}:){6}|::(?:[0-9a-f]{1,4}:){5}|(?:[0-9a-f]{1,4})?::(?:[0-9a-f]{1,4}:){4}|(?:(?:[0-9a-f]{1,4}:){0,1}[0-9a-f]{1,4})?::(?:[0-9a-f]{1,4}:){3}|(?:(?:[0-9a-f]{1,4}:){0,2}[0-9a-f]{1,4})?::(?:[0-9a-f]{1,4}:){2}|(?:(?:[0-9a-f]{1,4}:){0,3}[0-9a-f]{1,4})?::[0-9a-f]{1,4}:|(?:(?:[0-9a-f]{1,4}:){0,4}[0-9a-f]{1,4})?::)(?:[0-9a-f]{1,4}:[0-9a-f]{1,4}|(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d\d?))|(?:(?:[0-9a-f]{1,4}:){0,5}[0-9a-f]{1,4})?::[0-9a-f]{1,4}|(?:(?:[0-9a-f]{1,4}:){0,6}[0-9a-f]{1,4})?::)|[Vv][0-9a-f]+\.[a-z0-9\-._~!$&'()*+,;=:]+)\]|(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d\d?)|(?:[a-z0-9\-._~!$&'()*+,;=]|%[0-9a-f]{2})*)(?::\d*)?(?:\/(?:[a-z0-9\-._~!$&'()*+,;=:@]|%[0-9a-f]{2})*)*|\/(?:(?:[a-z0-9\-._~!$&'()*+,;=:@]|%[0-9a-f]{2})+(?:\/(?:[a-z0-9\-._~!$&'()*+,;=:@]|%[0-9a-f]{2})*)*)?|(?:[a-z0-9\-._~!$&'()*+,;=:@]|%[0-9a-f]{2})+(?:\/(?:[a-z0-9\-._~!$&'()*+,;=:@]|%[0-9a-f]{2})*)*)(?:\?(?:[a-z0-9\-._~!$&'()*+,;=:@/?]|%[0-9a-f]{2})*)?(?:#(?:[a-z0-9\-._~!$&'()*+,;=:@/?]|%[0-9a-f]{2})*)?$/i;
-  var URIREF = /^(?:[a-z][a-z0-9+\-.]*:)?(?:\/?\/(?:(?:[a-z0-9\-._~!$&'()*+,;=:]|%[0-9a-f]{2})*@)?(?:\[(?:(?:(?:(?:[0-9a-f]{1,4}:){6}|::(?:[0-9a-f]{1,4}:){5}|(?:[0-9a-f]{1,4})?::(?:[0-9a-f]{1,4}:){4}|(?:(?:[0-9a-f]{1,4}:){0,1}[0-9a-f]{1,4})?::(?:[0-9a-f]{1,4}:){3}|(?:(?:[0-9a-f]{1,4}:){0,2}[0-9a-f]{1,4})?::(?:[0-9a-f]{1,4}:){2}|(?:(?:[0-9a-f]{1,4}:){0,3}[0-9a-f]{1,4})?::[0-9a-f]{1,4}:|(?:(?:[0-9a-f]{1,4}:){0,4}[0-9a-f]{1,4})?::)(?:[0-9a-f]{1,4}:[0-9a-f]{1,4}|(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d\d?))|(?:(?:[0-9a-f]{1,4}:){0,5}[0-9a-f]{1,4})?::[0-9a-f]{1,4}|(?:(?:[0-9a-f]{1,4}:){0,6}[0-9a-f]{1,4})?::)|[Vv][0-9a-f]+\.[a-z0-9\-._~!$&'()*+,;=:]+)\]|(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d\d?)|(?:[a-z0-9\-._~!$&'"()*+,;=]|%[0-9a-f]{2})*)(?::\d*)?(?:\/(?:[a-z0-9\-._~!$&'"()*+,;=:@]|%[0-9a-f]{2})*)*|\/(?:(?:[a-z0-9\-._~!$&'"()*+,;=:@]|%[0-9a-f]{2})+(?:\/(?:[a-z0-9\-._~!$&'"()*+,;=:@]|%[0-9a-f]{2})*)*)?|(?:[a-z0-9\-._~!$&'"()*+,;=:@]|%[0-9a-f]{2})+(?:\/(?:[a-z0-9\-._~!$&'"()*+,;=:@]|%[0-9a-f]{2})*)*)?(?:\?(?:[a-z0-9\-._~!$&'"()*+,;=:@/?]|%[0-9a-f]{2})*)?(?:#(?:[a-z0-9\-._~!$&'"()*+,;=:@/?]|%[0-9a-f]{2})*)?$/i; // uri-template: https://tools.ietf.org/html/rfc6570
-
-  var URITEMPLATE = /^(?:(?:[^\x00-\x20"'<>%\\^`{|}]|%[0-9a-f]{2})|\{[+#./;?&=,!@|]?(?:[a-z0-9_]|%[0-9a-f]{2})+(?::[1-9][0-9]{0,3}|\*)?(?:,(?:[a-z0-9_]|%[0-9a-f]{2})+(?::[1-9][0-9]{0,3}|\*)?)*\})*$/i; // For the source: https://gist.github.com/dperini/729294
-  // For test cases: https://mathiasbynens.be/demo/url-regex
-  // @todo Delete current URL in favour of the commented out URL rule when this issue is fixed https://github.com/eslint/eslint/issues/7983.
-  // var URL = /^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!10(?:\.\d{1,3}){3})(?!127(?:\.\d{1,3}){3})(?!169\.254(?:\.\d{1,3}){2})(?!192\.168(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u{00a1}-\u{ffff}0-9]+-?)*[a-z\u{00a1}-\u{ffff}0-9]+)(?:\.(?:[a-z\u{00a1}-\u{ffff}0-9]+-?)*[a-z\u{00a1}-\u{ffff}0-9]+)*(?:\.(?:[a-z\u{00a1}-\u{ffff}]{2,})))(?::\d{2,5})?(?:\/[^\s]*)?$/iu;
-
-  var URL = /^(?:(?:http[s\u017F]?|ftp):\/\/)(?:(?:[\0-\x08\x0E-\x1F!-\x9F\xA1-\u167F\u1681-\u1FFF\u200B-\u2027\u202A-\u202E\u2030-\u205E\u2060-\u2FFF\u3001-\uD7FF\uE000-\uFEFE\uFF00-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])+(?::(?:[\0-\x08\x0E-\x1F!-\x9F\xA1-\u167F\u1681-\u1FFF\u200B-\u2027\u202A-\u202E\u2030-\u205E\u2060-\u2FFF\u3001-\uD7FF\uE000-\uFEFE\uFF00-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])*)?@)?(?:(?!10(?:\.[0-9]{1,3}){3})(?!127(?:\.[0-9]{1,3}){3})(?!169\.254(?:\.[0-9]{1,3}){2})(?!192\.168(?:\.[0-9]{1,3}){2})(?!172\.(?:1[6-9]|2[0-9]|3[01])(?:\.[0-9]{1,3}){2})(?:[1-9][0-9]?|1[0-9][0-9]|2[01][0-9]|22[0-3])(?:\.(?:1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])){2}(?:\.(?:[1-9][0-9]?|1[0-9][0-9]|2[0-4][0-9]|25[0-4]))|(?:(?:(?:[0-9KSa-z\xA1-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])+-?)*(?:[0-9KSa-z\xA1-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])+)(?:\.(?:(?:[0-9KSa-z\xA1-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])+-?)*(?:[0-9KSa-z\xA1-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])+)*(?:\.(?:(?:[KSa-z\xA1-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF]){2,})))(?::[0-9]{2,5})?(?:\/(?:[\0-\x08\x0E-\x1F!-\x9F\xA1-\u167F\u1681-\u1FFF\u200B-\u2027\u202A-\u202E\u2030-\u205E\u2060-\u2FFF\u3001-\uD7FF\uE000-\uFEFE\uFF00-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])*)?$/i;
-  var UUID = /^(?:urn:uuid:)?[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}$/i;
-  var JSON_POINTER$1 = /^(?:\/(?:[^~/]|~0|~1)*)*$/;
-  var JSON_POINTER_URI_FRAGMENT = /^#(?:\/(?:[a-z0-9_\-.!$&'()*+,;:=@]|%[0-9a-f]{2}|~0|~1)*)*$/i;
-  var RELATIVE_JSON_POINTER$1 = /^(?:0|[1-9][0-9]*)(?:#|(?:\/(?:[^~/]|~0|~1)*)*)$/;
-
-  function formats(mode) {
-    mode = mode == 'full' ? 'full' : 'fast';
-    return copy(formats[mode]);
-  }
-
-  formats.fast = {
-    // date: http://tools.ietf.org/html/rfc3339#section-5.6
-    date: /^\d\d\d\d-[0-1]\d-[0-3]\d$/,
-    // date-time: http://tools.ietf.org/html/rfc3339#section-5.6
-    time: /^(?:[0-2]\d:[0-5]\d:[0-5]\d|23:59:60)(?:\.\d+)?(?:z|[+-]\d\d:\d\d)?$/i,
-    'date-time': /^\d\d\d\d-[0-1]\d-[0-3]\d[t\s](?:[0-2]\d:[0-5]\d:[0-5]\d|23:59:60)(?:\.\d+)?(?:z|[+-]\d\d:\d\d)$/i,
-    // uri: https://github.com/mafintosh/is-my-json-valid/blob/master/formats.js
-    uri: /^(?:[a-z][a-z0-9+-.]*:)(?:\/?\/)?[^\s]*$/i,
-    'uri-reference': /^(?:(?:[a-z][a-z0-9+-.]*:)?\/?\/)?(?:[^\\\s#][^\s#]*)?(?:#[^\\\s]*)?$/i,
-    'uri-template': URITEMPLATE,
-    url: URL,
-    // email (sources from jsen validator):
-    // http://stackoverflow.com/questions/201323/using-a-regular-expression-to-validate-an-email-address#answer-8829363
-    // http://www.w3.org/TR/html5/forms.html#valid-e-mail-address (search for 'willful violation')
-    email: /^[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)*$/i,
-    hostname: HOSTNAME,
-    // optimized https://www.safaribooksonline.com/library/view/regular-expressions-cookbook/9780596802837/ch07s16.html
-    ipv4: /^(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d\d?)$/,
-    // optimized http://stackoverflow.com/questions/53497/regular-expression-that-matches-valid-ipv6-addresses
-    ipv6: /^\s*(?:(?:(?:[0-9a-f]{1,4}:){7}(?:[0-9a-f]{1,4}|:))|(?:(?:[0-9a-f]{1,4}:){6}(?::[0-9a-f]{1,4}|(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(?:(?:[0-9a-f]{1,4}:){5}(?:(?:(?::[0-9a-f]{1,4}){1,2})|:(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(?:(?:[0-9a-f]{1,4}:){4}(?:(?:(?::[0-9a-f]{1,4}){1,3})|(?:(?::[0-9a-f]{1,4})?:(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(?:(?:[0-9a-f]{1,4}:){3}(?:(?:(?::[0-9a-f]{1,4}){1,4})|(?:(?::[0-9a-f]{1,4}){0,2}:(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(?:(?:[0-9a-f]{1,4}:){2}(?:(?:(?::[0-9a-f]{1,4}){1,5})|(?:(?::[0-9a-f]{1,4}){0,3}:(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(?:(?:[0-9a-f]{1,4}:){1}(?:(?:(?::[0-9a-f]{1,4}){1,6})|(?:(?::[0-9a-f]{1,4}){0,4}:(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(?::(?:(?:(?::[0-9a-f]{1,4}){1,7})|(?:(?::[0-9a-f]{1,4}){0,5}:(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(?:%.+)?\s*$/i,
-    regex: regex,
-    // uuid: http://tools.ietf.org/html/rfc4122
-    uuid: UUID,
-    // JSON-pointer: https://tools.ietf.org/html/rfc6901
-    // uri fragment: https://tools.ietf.org/html/rfc3986#appendix-A
-    'json-pointer': JSON_POINTER$1,
-    'json-pointer-uri-fragment': JSON_POINTER_URI_FRAGMENT,
-    // relative JSON-pointer: http://tools.ietf.org/html/draft-luff-relative-json-pointer-00
-    'relative-json-pointer': RELATIVE_JSON_POINTER$1
-  };
-  formats.full = {
-    date: date,
-    time: time,
-    'date-time': date_time,
-    uri: uri,
-    'uri-reference': URIREF,
-    'uri-template': URITEMPLATE,
-    url: URL,
-    email: /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&''*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i,
-    hostname: hostname,
-    ipv4: /^(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d\d?)$/,
-    ipv6: /^\s*(?:(?:(?:[0-9a-f]{1,4}:){7}(?:[0-9a-f]{1,4}|:))|(?:(?:[0-9a-f]{1,4}:){6}(?::[0-9a-f]{1,4}|(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(?:(?:[0-9a-f]{1,4}:){5}(?:(?:(?::[0-9a-f]{1,4}){1,2})|:(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(?:(?:[0-9a-f]{1,4}:){4}(?:(?:(?::[0-9a-f]{1,4}){1,3})|(?:(?::[0-9a-f]{1,4})?:(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(?:(?:[0-9a-f]{1,4}:){3}(?:(?:(?::[0-9a-f]{1,4}){1,4})|(?:(?::[0-9a-f]{1,4}){0,2}:(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(?:(?:[0-9a-f]{1,4}:){2}(?:(?:(?::[0-9a-f]{1,4}){1,5})|(?:(?::[0-9a-f]{1,4}){0,3}:(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(?:(?:[0-9a-f]{1,4}:){1}(?:(?:(?::[0-9a-f]{1,4}){1,6})|(?:(?::[0-9a-f]{1,4}){0,4}:(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(?::(?:(?:(?::[0-9a-f]{1,4}){1,7})|(?:(?::[0-9a-f]{1,4}){0,5}:(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(?:%.+)?\s*$/i,
-    regex: regex,
-    uuid: UUID,
-    'json-pointer': JSON_POINTER$1,
-    'json-pointer-uri-fragment': JSON_POINTER_URI_FRAGMENT,
-    'relative-json-pointer': RELATIVE_JSON_POINTER$1
+  /** @jsx h */
+  var BodyColumn = function BodyColumn(d) {
+    return h("tr", null, Object.keys(d).map(function (k) {
+      return h("td", null, d[k]);
+    }));
   };
 
-  function isLeapYear(year) {
-    // https://tools.ietf.org/html/rfc3339#appendix-C
-    return year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
-  }
+  var ClassBuilder =
+  /*#__PURE__*/
+  function () {
+    function ClassBuilder() {
+      _classCallCheck(this, ClassBuilder);
 
-  function date(str) {
-    // full-date from http://tools.ietf.org/html/rfc3339#section-5.6
-    var matches = str.match(DATE);
-    if (!matches) return false;
-    var year = +matches[1];
-    var month = +matches[2];
-    var day = +matches[3];
-    return month >= 1 && month <= 12 && day >= 1 && day <= (month == 2 && isLeapYear(year) ? 29 : DAYS[month]);
-  }
-
-  function time(str, full) {
-    var matches = str.match(TIME);
-    if (!matches) return false;
-    var hour = matches[1];
-    var minute = matches[2];
-    var second = matches[3];
-    var timeZone = matches[5];
-    return (hour <= 23 && minute <= 59 && second <= 59 || hour == 23 && minute == 59 && second == 60) && (!full || timeZone);
-  }
-
-  var DATE_TIME_SEPARATOR = /t|\s/i;
-
-  function date_time(str) {
-    // http://tools.ietf.org/html/rfc3339#section-5.6
-    var dateTime = str.split(DATE_TIME_SEPARATOR);
-    return dateTime.length == 2 && date(dateTime[0]) && time(dateTime[1], true);
-  }
-
-  function hostname(str) {
-    // https://tools.ietf.org/html/rfc1034#section-3.5
-    // https://tools.ietf.org/html/rfc1123#section-2
-    return str.length <= 255 && HOSTNAME.test(str);
-  }
-
-  var NOT_URI_FRAGMENT = /\/|:/;
-
-  function uri(str) {
-    // http://jmrware.com/articles/2009/uri_regexp/URI_regex.html + optional protocol + required "."
-    return NOT_URI_FRAGMENT.test(str) && URI.test(str);
-  }
-
-  var Z_ANCHOR = /[^\\]\\Z/;
-
-  function regex(str) {
-    if (Z_ANCHOR.test(str)) return false;
-
-    try {
-      return true;
-    } catch (e) {
-      return false;
+      this.classes = [];
     }
+
+    _createClass(ClassBuilder, [{
+      key: "addClass",
+      value: function addClass(className) {
+        this.classes.push(className);
+        return this;
+      }
+    }, {
+      key: "build",
+      value: function build() {
+        return this.classes.join(' ');
+      }
+    }]);
+
+    return ClassBuilder;
+  }();
+
+  /** @jsx h */
+
+  var buildTableClasses = function buildTableClasses(s) {
+    var cb = new ClassBuilder();
+    s.striped && cb.addClass('table-striped');
+    s.bordered && cb.addClass('table-bordered');
+    s.dark && cb.addClass('table-dark');
+    s.hover && cb.addClass('table-hover');
+    return cb.build();
+  };
+
+  var TableHead = function TableHead(s) {
+    return s.headClassName ? h("thead", {
+      class: s.headClassName
+    }) : h("thead", null);
+  };
+
+  var TableFoot = function TableFoot(s) {
+    return s.footClassName ? h("tfoot", {
+      class: s.footClassName
+    }) : h("tfoot", null);
+  };
+
+  var DefaultTable = function DefaultTable(s) {
+    return h("table", {
+      class: "table ".concat(buildTableClasses(s))
+    }, TableHead(s), h("tbody", null), s.footers ? TableFoot(s) : '');
+  };
+
+  /** @jsx h */
+  var DisplayedEntries = function DisplayedEntries(s) {
+    return h("div", {
+      class: "mb-2 w-25"
+    }, h("span", {
+      class: "mr-1"
+    }, "Display"), h("select", {
+      class: "form-control d-inline-block w-auto",
+      size: "1"
+    }, h("option", {
+      value: "10",
+      selected: s.pageSize === 10
+    }, "10"), h("option", {
+      value: "25",
+      selected: s.pageSize === 25
+    }, "25"), h("option", {
+      value: "50",
+      selected: s.pageSize === 50
+    }, "50")), h("span", {
+      class: "ml-1"
+    }, "rows"));
+  };
+
+  var EmptyTableRow = function EmptyTableRow(l) {
+    var cls = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var c = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
+    return h("tr", null, h("td", _extends({
+      colspan: l
+    }, cls), c));
+  };
+
+  /** @jsx h */
+  var FixedHeightTable = function FixedHeightTable(s) {
+    return h("div", {
+      class: "tfh-c tfh-h tfh-f".concat(s.footers ? ' mb-3' : '')
+    }, h("div", {
+      class: "tfh"
+    }, DefaultTable(s)));
+  };
+
+  function getTitle(k, v) {
+    return v && v.title || k;
   }
 
-  var formats$1 = formats();
+  /** @jsx h */
+  var Title = function Title(f, k, s) {
+    if (f) {
+      return h("div", null, getTitle(k, s[k]));
+    } else {
+      return getTitle(k, s[k]);
+    }
+  };
+
+  /** @jsx h */
+  var HeadRow = function HeadRow(f, s, d) {
+    return h("tr", null, d.map(function (k) {
+      return h("th", null, Title(f, k, s));
+    }));
+  };
+
+  /** @jsx h */
+  var FootRow = function FootRow(f, s, d) {
+    return h("tr", null, d.map(function (k) {
+      return h("th", null, Title(f, k, s));
+    }));
+  };
+
+  /** @jsx h */
+  var PaginationList = function PaginationList(s) {
+    return h("div", {
+      class: "row"
+    }, h("div", {
+      class: "col-sm"
+    }, h("div", {
+      class: "pagination-info mb-2"
+    }, s.info)), h("div", {
+      class: "col-sm"
+    }, h("ul", {
+      class: "pagination mb-0 float-right"
+    }, h("li", {
+      class: "page-item".concat(!s.isTherePreviousPage ? ' disabled' : '')
+    }, h("a", {
+      class: "page-link previous-link",
+      href: "#",
+      tabindex: !s.isTherePreviousPage ? -1 : 0,
+      "aria-label": "Previous"
+    }, "Previous")), s.pageIndices.map(function (i) {
+      return h("li", {
+        class: "page-item".concat(i === s.currentPageIndex ? ' active' : '')
+      }, h("a", {
+        class: "page-link goto-link",
+        href: "#",
+        "data-page-index": s.pageIndex,
+        "data-goto-page-index": i
+      }, i + 1));
+    }), h("li", {
+      class: "page-item".concat(!s.isThereNextPage ? ' disabled' : '')
+    }, h("a", {
+      class: "page-link next-link",
+      href: "#",
+      tabindex: !s.isThereNextPage ? -1 : 0,
+      "aria-label": "Next"
+    }, "Next")))));
+  };
+  var Pagination = function Pagination(s) {
+    return h("nav", {
+      "aria-label": "Table pagination",
+      class: "pagination-container mb-3 clearfix"
+    }, PaginationList(s));
+  };
+
+  var Table = function Table(s) {
+    return s.fixedHeight ? FixedHeightTable(s) : DefaultTable(s);
+  };
+
+  var Store =
+  /*#__PURE__*/
+  function () {
+    function Store(state) {
+      _classCallCheck(this, Store);
+
+      this.state = {
+        striped: false,
+        dark: false,
+        bordered: false,
+        hover: false,
+        fixedHeight: false,
+        headers: true,
+        headClassName: null,
+        footers: false,
+        footClassName: null,
+        displayedEntries: false,
+        pageIndex: 0,
+        pageSize: 50,
+        visiblePageCount: 4,
+        firstVisiblePageIndex: 0,
+        pr: null,
+        rows: null,
+        tableRendered: false,
+        headRendered: false,
+        footRendered: false,
+        paginationRendered: false,
+        displayedEntriesRendered: false
+      };
+      this.observers = [];
+      Object.assign(this.state, state);
+
+      if (state.data && _typeof(state.data) === 'object') {
+        this.createNodes(state.data);
+      }
+    }
+
+    _createClass(Store, [{
+      key: "registerObserver",
+      value: function registerObserver(observer) {
+        this.observers.push(observer);
+      }
+    }, {
+      key: "setState",
+      value: function setState(state) {
+        var notify = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+        Object.assign(this.state, state);
+
+        if (state.data && _typeof(state.data) === 'object') {
+          this.createNodes(state.data);
+        }
+
+        if (notify) {
+          this.notifyObservers();
+        }
+      }
+    }, {
+      key: "notifyObservers",
+      value: function notifyObservers() {
+        var _this = this;
+
+        this.observers.forEach(function (o) {
+          return o.update(_this);
+        });
+      }
+    }, {
+      key: "createNodes",
+      value: function createNodes(data) {
+        this.state.pr = {};
+        this.state.rows = [];
+
+        if (data.rows.length > this.state.pageSize && data.rows.length < 50) {
+          this.state.pageSize = data.rows.length;
+        }
+
+        for (var i = 0; i < data.rows.length; i++) {
+          var item = data.rows[i];
+          var id = generateId();
+          var vd = {
+            id: id,
+            data: item
+          };
+          this.state.rows.push(vd);
+          this.state.pr[vd.id] = BodyColumn(item);
+        }
+      }
+    }]);
+
+    return Store;
+  }();
 
   var validate = function () {
-    var pattern0 = new RegExp('^https?://');
     return function validate(data, dataPath, parentData, parentDataProperty, rootData) {
       var vErrors = null;
       var errors = 0;
@@ -1361,20 +1473,20 @@
                     }
 
                     if (valid1) {
-                      if (data.footers === undefined) {
+                      if (data.headClassName === undefined) {
                         valid1 = true;
                       } else {
                         var errs_1 = errors;
 
-                        if (typeof data.footers !== "boolean") {
+                        if (typeof data.headClassName !== "string") {
                           validate.errors = [{
                             keyword: 'type',
-                            dataPath: (dataPath || '') + '.footers',
-                            schemaPath: '#/properties/footers/type',
+                            dataPath: (dataPath || '') + '.headClassName',
+                            schemaPath: '#/properties/headClassName/type',
                             params: {
-                              type: 'boolean'
+                              type: 'string'
                             },
-                            message: 'should be boolean'
+                            message: 'should be string'
                           }];
                           return false;
                         }
@@ -1383,16 +1495,16 @@
                       }
 
                       if (valid1) {
-                        if (data.displayedEntries === undefined) {
+                        if (data.footers === undefined) {
                           valid1 = true;
                         } else {
                           var errs_1 = errors;
 
-                          if (typeof data.displayedEntries !== "boolean") {
+                          if (typeof data.footers !== "boolean") {
                             validate.errors = [{
                               keyword: 'type',
-                              dataPath: (dataPath || '') + '.displayedEntries',
-                              schemaPath: '#/properties/displayedEntries/type',
+                              dataPath: (dataPath || '') + '.footers',
+                              schemaPath: '#/properties/footers/type',
                               params: {
                                 type: 'boolean'
                               },
@@ -1405,149 +1517,42 @@
                         }
 
                         if (valid1) {
-                          var data1 = data.schema;
-
-                          if (data1 === undefined) {
-                            valid1 = false;
-                            validate.errors = [{
-                              keyword: 'required',
-                              dataPath: (dataPath || '') + "",
-                              schemaPath: '#/required',
-                              params: {
-                                missingProperty: 'schema'
-                              },
-                              message: 'should have required property \'schema\''
-                            }];
-                            return false;
+                          if (data.footClassName === undefined) {
+                            valid1 = true;
                           } else {
                             var errs_1 = errors;
-                            var errs__1 = errors,
-                                prevValid1 = false,
-                                valid1 = false,
-                                passingSchemas1 = null;
-                            var errs_2 = errors;
 
-                            if (errors === errs_2) {
-                              if (typeof data1 === "string") {
-                                if (!pattern0.test(data1)) {
-                                  var err = {
-                                    keyword: 'pattern',
-                                    dataPath: (dataPath || '') + '.schema',
-                                    schemaPath: '#/properties/schema/oneOf/0/pattern',
-                                    params: {
-                                      pattern: '^https?://'
-                                    },
-                                    message: 'should match pattern "^https?://"'
-                                  };
-                                  if (vErrors === null) vErrors = [err];else vErrors.push(err);
-                                  errors++;
-                                } else {
-                                  if (!formats$1.uri.test(data1)) {
-                                    var err = {
-                                      keyword: 'format',
-                                      dataPath: (dataPath || '') + '.schema',
-                                      schemaPath: '#/properties/schema/oneOf/0/format',
-                                      params: {
-                                        format: 'uri'
-                                      },
-                                      message: 'should match format "uri"'
-                                    };
-                                    if (vErrors === null) vErrors = [err];else vErrors.push(err);
-                                    errors++;
-                                  }
-                                }
-                              } else {
-                                var err = {
-                                  keyword: 'type',
-                                  dataPath: (dataPath || '') + '.schema',
-                                  schemaPath: '#/properties/schema/oneOf/0/type',
-                                  params: {
-                                    type: 'string'
-                                  },
-                                  message: 'should be string'
-                                };
-                                if (vErrors === null) vErrors = [err];else vErrors.push(err);
-                                errors++;
-                              }
-                            }
-
-                            var valid2 = errors === errs_2;
-
-                            if (valid2) {
-                              valid1 = prevValid1 = true;
-                              passingSchemas1 = 0;
-                            }
-
-                            var errs_2 = errors;
-
-                            if (!data1 || _typeof(data1) !== "object" || Array.isArray(data1)) {
-                              var err = {
+                            if (typeof data.footClassName !== "string") {
+                              validate.errors = [{
                                 keyword: 'type',
-                                dataPath: (dataPath || '') + '.schema',
-                                schemaPath: '#/properties/schema/oneOf/1/type',
+                                dataPath: (dataPath || '') + '.footClassName',
+                                schemaPath: '#/properties/footClassName/type',
                                 params: {
-                                  type: 'object'
+                                  type: 'string'
                                 },
-                                message: 'should be object'
-                              };
-                              if (vErrors === null) vErrors = [err];else vErrors.push(err);
-                              errors++;
-                            }
-
-                            var valid2 = errors === errs_2;
-
-                            if (valid2 && prevValid1) {
-                              valid1 = false;
-                              passingSchemas1 = [passingSchemas1, 1];
-                            } else {
-                              if (valid2) {
-                                valid1 = prevValid1 = true;
-                                passingSchemas1 = 1;
-                              }
-                            }
-
-                            if (!valid1) {
-                              var err = {
-                                keyword: 'oneOf',
-                                dataPath: (dataPath || '') + '.schema',
-                                schemaPath: '#/properties/schema/oneOf',
-                                params: {
-                                  passingSchemas: passingSchemas1
-                                },
-                                message: 'should match exactly one schema in oneOf'
-                              };
-                              if (vErrors === null) vErrors = [err];else vErrors.push(err);
-                              errors++;
-                              validate.errors = vErrors;
+                                message: 'should be string'
+                              }];
                               return false;
-                            } else {
-                              errors = errs__1;
-
-                              if (vErrors !== null) {
-                                if (errs__1) vErrors.length = errs__1;else vErrors = null;
-                              }
                             }
 
                             var valid1 = errors === errs_1;
                           }
 
                           if (valid1) {
-                            var data1 = data.start;
-
-                            if (data1 === undefined) {
+                            if (data.displayedEntries === undefined) {
                               valid1 = true;
                             } else {
                               var errs_1 = errors;
 
-                              if (typeof data1 !== "number" || data1 % 1 || data1 !== data1) {
+                              if (typeof data.displayedEntries !== "boolean") {
                                 validate.errors = [{
                                   keyword: 'type',
-                                  dataPath: (dataPath || '') + '.start',
-                                  schemaPath: '#/properties/start/type',
+                                  dataPath: (dataPath || '') + '.displayedEntries',
+                                  schemaPath: '#/properties/displayedEntries/type',
                                   params: {
-                                    type: 'integer'
+                                    type: 'boolean'
                                   },
-                                  message: 'should be integer'
+                                  message: 'should be boolean'
                                 }];
                                 return false;
                               }
@@ -1556,214 +1561,339 @@
                             }
 
                             if (valid1) {
-                              var data1 = data.size;
+                              var data1 = data.schema;
 
                               if (data1 === undefined) {
-                                valid1 = true;
+                                valid1 = false;
+                                validate.errors = [{
+                                  keyword: 'required',
+                                  dataPath: (dataPath || '') + "",
+                                  schemaPath: '#/required',
+                                  params: {
+                                    missingProperty: 'schema'
+                                  },
+                                  message: 'should have required property \'schema\''
+                                }];
+                                return false;
                               } else {
                                 var errs_1 = errors;
-                                var errs__1 = errors,
-                                    prevValid1 = false,
-                                    valid1 = false,
-                                    passingSchemas1 = null;
-                                var errs_2 = errors;
 
-                                if (typeof data1 === "number") {
-                                  if (data1 > 10 || data1 !== data1) {
-                                    var err = {
-                                      keyword: 'maximum',
-                                      dataPath: (dataPath || '') + '.size',
-                                      schemaPath: '#/properties/size/oneOf/0/maximum',
-                                      params: {
-                                        comparison: '<=',
-                                        limit: 10,
-                                        exclusive: false
-                                      },
-                                      message: 'should be <= 10'
-                                    };
-                                    if (vErrors === null) vErrors = [err];else vErrors.push(err);
-                                    errors++;
-                                  } else {
-                                    if (data1 < 10 || data1 !== data1) {
-                                      var err = {
-                                        keyword: 'minimum',
-                                        dataPath: (dataPath || '') + '.size',
-                                        schemaPath: '#/properties/size/oneOf/0/minimum',
-                                        params: {
-                                          comparison: '>=',
-                                          limit: 10,
-                                          exclusive: false
-                                        },
-                                        message: 'should be >= 10'
-                                      };
-                                      if (vErrors === null) vErrors = [err];else vErrors.push(err);
-                                      errors++;
-                                    }
-                                  }
-                                } else {
-                                  var err = {
+                                if (!data1 || _typeof(data1) !== "object" || Array.isArray(data1)) {
+                                  validate.errors = [{
                                     keyword: 'type',
-                                    dataPath: (dataPath || '') + '.size',
-                                    schemaPath: '#/properties/size/oneOf/0/type',
+                                    dataPath: (dataPath || '') + '.schema',
+                                    schemaPath: '#/properties/schema/type',
                                     params: {
-                                      type: 'number'
+                                      type: 'object'
                                     },
-                                    message: 'should be number'
-                                  };
-                                  if (vErrors === null) vErrors = [err];else vErrors.push(err);
-                                  errors++;
+                                    message: 'should be object'
+                                  }];
+                                  return false;
                                 }
 
-                                var valid2 = errors === errs_2;
+                                var valid1 = errors === errs_1;
+                              }
 
-                                if (valid2) {
-                                  valid1 = prevValid1 = true;
-                                  passingSchemas1 = 0;
-                                }
+                              if (valid1) {
+                                var data1 = data.pageIndex;
 
-                                var errs_2 = errors;
+                                if (data1 === undefined) {
+                                  valid1 = true;
+                                } else {
+                                  var errs_1 = errors;
 
-                                if (typeof data1 === "number") {
-                                  if (data1 > 25 || data1 !== data1) {
-                                    var err = {
-                                      keyword: 'maximum',
-                                      dataPath: (dataPath || '') + '.size',
-                                      schemaPath: '#/properties/size/oneOf/1/maximum',
+                                  if (typeof data1 !== "number" || data1 % 1 || data1 !== data1) {
+                                    validate.errors = [{
+                                      keyword: 'type',
+                                      dataPath: (dataPath || '') + '.pageIndex',
+                                      schemaPath: '#/properties/pageIndex/type',
                                       params: {
-                                        comparison: '<=',
-                                        limit: 25,
-                                        exclusive: false
+                                        type: 'integer'
                                       },
-                                      message: 'should be <= 25'
-                                    };
-                                    if (vErrors === null) vErrors = [err];else vErrors.push(err);
-                                    errors++;
-                                  } else {
-                                    if (data1 < 25 || data1 !== data1) {
-                                      var err = {
-                                        keyword: 'minimum',
-                                        dataPath: (dataPath || '') + '.size',
-                                        schemaPath: '#/properties/size/oneOf/1/minimum',
-                                        params: {
-                                          comparison: '>=',
-                                          limit: 25,
-                                          exclusive: false
-                                        },
-                                        message: 'should be >= 25'
-                                      };
-                                      if (vErrors === null) vErrors = [err];else vErrors.push(err);
-                                      errors++;
-                                    }
+                                      message: 'should be integer'
+                                    }];
+                                    return false;
                                   }
-                                } else {
-                                  var err = {
-                                    keyword: 'type',
-                                    dataPath: (dataPath || '') + '.size',
-                                    schemaPath: '#/properties/size/oneOf/1/type',
-                                    params: {
-                                      type: 'number'
-                                    },
-                                    message: 'should be number'
-                                  };
-                                  if (vErrors === null) vErrors = [err];else vErrors.push(err);
-                                  errors++;
-                                }
-
-                                var valid2 = errors === errs_2;
-
-                                if (valid2 && prevValid1) {
-                                  valid1 = false;
-                                  passingSchemas1 = [passingSchemas1, 1];
-                                } else {
-                                  if (valid2) {
-                                    valid1 = prevValid1 = true;
-                                    passingSchemas1 = 1;
-                                  }
-
-                                  var errs_2 = errors;
 
                                   if (typeof data1 === "number") {
-                                    if (data1 > 50 || data1 !== data1) {
-                                      var err = {
-                                        keyword: 'maximum',
-                                        dataPath: (dataPath || '') + '.size',
-                                        schemaPath: '#/properties/size/oneOf/2/maximum',
+                                    if (data1 < 0 || data1 !== data1) {
+                                      validate.errors = [{
+                                        keyword: 'minimum',
+                                        dataPath: (dataPath || '') + '.pageIndex',
+                                        schemaPath: '#/properties/pageIndex/minimum',
                                         params: {
-                                          comparison: '<=',
-                                          limit: 50,
+                                          comparison: '>=',
+                                          limit: 0,
                                           exclusive: false
                                         },
-                                        message: 'should be <= 50'
+                                        message: 'should be >= 0'
+                                      }];
+                                      return false;
+                                    }
+                                  }
+
+                                  var valid1 = errors === errs_1;
+                                }
+
+                                if (valid1) {
+                                  var data1 = data.pageSize;
+
+                                  if (data1 === undefined) {
+                                    valid1 = true;
+                                  } else {
+                                    var errs_1 = errors;
+                                    var errs__1 = errors,
+                                        prevValid1 = false,
+                                        valid1 = false,
+                                        passingSchemas1 = null;
+                                    var errs_2 = errors;
+
+                                    if (typeof data1 !== "number" || data1 % 1 || data1 !== data1) {
+                                      var err = {
+                                        keyword: 'type',
+                                        dataPath: (dataPath || '') + '.pageSize',
+                                        schemaPath: '#/properties/pageSize/oneOf/0/type',
+                                        params: {
+                                          type: 'integer'
+                                        },
+                                        message: 'should be integer'
                                       };
                                       if (vErrors === null) vErrors = [err];else vErrors.push(err);
                                       errors++;
-                                    } else {
-                                      if (data1 < 50 || data1 !== data1) {
+                                    }
+
+                                    if (typeof data1 === "number") {
+                                      if (data1 > 10 || data1 !== data1) {
                                         var err = {
-                                          keyword: 'minimum',
-                                          dataPath: (dataPath || '') + '.size',
-                                          schemaPath: '#/properties/size/oneOf/2/minimum',
+                                          keyword: 'maximum',
+                                          dataPath: (dataPath || '') + '.pageSize',
+                                          schemaPath: '#/properties/pageSize/oneOf/0/maximum',
                                           params: {
-                                            comparison: '>=',
-                                            limit: 50,
+                                            comparison: '<=',
+                                            limit: 10,
                                             exclusive: false
                                           },
-                                          message: 'should be >= 50'
+                                          message: 'should be <= 10'
+                                        };
+                                        if (vErrors === null) vErrors = [err];else vErrors.push(err);
+                                        errors++;
+                                      } else {
+                                        if (data1 < 10 || data1 !== data1) {
+                                          var err = {
+                                            keyword: 'minimum',
+                                            dataPath: (dataPath || '') + '.pageSize',
+                                            schemaPath: '#/properties/pageSize/oneOf/0/minimum',
+                                            params: {
+                                              comparison: '>=',
+                                              limit: 10,
+                                              exclusive: false
+                                            },
+                                            message: 'should be >= 10'
+                                          };
+                                          if (vErrors === null) vErrors = [err];else vErrors.push(err);
+                                          errors++;
+                                        }
+                                      }
+                                    }
+
+                                    var valid2 = errors === errs_2;
+
+                                    if (valid2) {
+                                      valid1 = prevValid1 = true;
+                                      passingSchemas1 = 0;
+                                    }
+
+                                    var errs_2 = errors;
+
+                                    if (typeof data1 !== "number" || data1 % 1 || data1 !== data1) {
+                                      var err = {
+                                        keyword: 'type',
+                                        dataPath: (dataPath || '') + '.pageSize',
+                                        schemaPath: '#/properties/pageSize/oneOf/1/type',
+                                        params: {
+                                          type: 'integer'
+                                        },
+                                        message: 'should be integer'
+                                      };
+                                      if (vErrors === null) vErrors = [err];else vErrors.push(err);
+                                      errors++;
+                                    }
+
+                                    if (typeof data1 === "number") {
+                                      if (data1 > 25 || data1 !== data1) {
+                                        var err = {
+                                          keyword: 'maximum',
+                                          dataPath: (dataPath || '') + '.pageSize',
+                                          schemaPath: '#/properties/pageSize/oneOf/1/maximum',
+                                          params: {
+                                            comparison: '<=',
+                                            limit: 25,
+                                            exclusive: false
+                                          },
+                                          message: 'should be <= 25'
+                                        };
+                                        if (vErrors === null) vErrors = [err];else vErrors.push(err);
+                                        errors++;
+                                      } else {
+                                        if (data1 < 25 || data1 !== data1) {
+                                          var err = {
+                                            keyword: 'minimum',
+                                            dataPath: (dataPath || '') + '.pageSize',
+                                            schemaPath: '#/properties/pageSize/oneOf/1/minimum',
+                                            params: {
+                                              comparison: '>=',
+                                              limit: 25,
+                                              exclusive: false
+                                            },
+                                            message: 'should be >= 25'
+                                          };
+                                          if (vErrors === null) vErrors = [err];else vErrors.push(err);
+                                          errors++;
+                                        }
+                                      }
+                                    }
+
+                                    var valid2 = errors === errs_2;
+
+                                    if (valid2 && prevValid1) {
+                                      valid1 = false;
+                                      passingSchemas1 = [passingSchemas1, 1];
+                                    } else {
+                                      if (valid2) {
+                                        valid1 = prevValid1 = true;
+                                        passingSchemas1 = 1;
+                                      }
+
+                                      var errs_2 = errors;
+
+                                      if (typeof data1 !== "number" || data1 % 1 || data1 !== data1) {
+                                        var err = {
+                                          keyword: 'type',
+                                          dataPath: (dataPath || '') + '.pageSize',
+                                          schemaPath: '#/properties/pageSize/oneOf/2/type',
+                                          params: {
+                                            type: 'integer'
+                                          },
+                                          message: 'should be integer'
                                         };
                                         if (vErrors === null) vErrors = [err];else vErrors.push(err);
                                         errors++;
                                       }
+
+                                      if (typeof data1 === "number") {
+                                        if (data1 > 50 || data1 !== data1) {
+                                          var err = {
+                                            keyword: 'maximum',
+                                            dataPath: (dataPath || '') + '.pageSize',
+                                            schemaPath: '#/properties/pageSize/oneOf/2/maximum',
+                                            params: {
+                                              comparison: '<=',
+                                              limit: 50,
+                                              exclusive: false
+                                            },
+                                            message: 'should be <= 50'
+                                          };
+                                          if (vErrors === null) vErrors = [err];else vErrors.push(err);
+                                          errors++;
+                                        } else {
+                                          if (data1 < 50 || data1 !== data1) {
+                                            var err = {
+                                              keyword: 'minimum',
+                                              dataPath: (dataPath || '') + '.pageSize',
+                                              schemaPath: '#/properties/pageSize/oneOf/2/minimum',
+                                              params: {
+                                                comparison: '>=',
+                                                limit: 50,
+                                                exclusive: false
+                                              },
+                                              message: 'should be >= 50'
+                                            };
+                                            if (vErrors === null) vErrors = [err];else vErrors.push(err);
+                                            errors++;
+                                          }
+                                        }
+                                      }
+
+                                      var valid2 = errors === errs_2;
+
+                                      if (valid2 && prevValid1) {
+                                        valid1 = false;
+                                        passingSchemas1 = [passingSchemas1, 2];
+                                      } else {
+                                        if (valid2) {
+                                          valid1 = prevValid1 = true;
+                                          passingSchemas1 = 2;
+                                        }
+                                      }
                                     }
-                                  } else {
-                                    var err = {
-                                      keyword: 'type',
-                                      dataPath: (dataPath || '') + '.size',
-                                      schemaPath: '#/properties/size/oneOf/2/type',
-                                      params: {
-                                        type: 'number'
-                                      },
-                                      message: 'should be number'
-                                    };
-                                    if (vErrors === null) vErrors = [err];else vErrors.push(err);
-                                    errors++;
+
+                                    if (!valid1) {
+                                      var err = {
+                                        keyword: 'oneOf',
+                                        dataPath: (dataPath || '') + '.pageSize',
+                                        schemaPath: '#/properties/pageSize/oneOf',
+                                        params: {
+                                          passingSchemas: passingSchemas1
+                                        },
+                                        message: 'should match exactly one schema in oneOf'
+                                      };
+                                      if (vErrors === null) vErrors = [err];else vErrors.push(err);
+                                      errors++;
+                                      validate.errors = vErrors;
+                                      return false;
+                                    } else {
+                                      errors = errs__1;
+
+                                      if (vErrors !== null) {
+                                        if (errs__1) vErrors.length = errs__1;else vErrors = null;
+                                      }
+                                    }
+
+                                    var valid1 = errors === errs_1;
                                   }
 
-                                  var valid2 = errors === errs_2;
+                                  if (valid1) {
+                                    var data1 = data.visiblePageCount;
 
-                                  if (valid2 && prevValid1) {
-                                    valid1 = false;
-                                    passingSchemas1 = [passingSchemas1, 2];
-                                  } else {
-                                    if (valid2) {
-                                      valid1 = prevValid1 = true;
-                                      passingSchemas1 = 2;
+                                    if (data1 === undefined) {
+                                      valid1 = true;
+                                    } else {
+                                      var errs_1 = errors;
+
+                                      if (typeof data1 !== "number" || data1 % 1 || data1 !== data1) {
+                                        validate.errors = [{
+                                          keyword: 'type',
+                                          dataPath: (dataPath || '') + '.visiblePageCount',
+                                          schemaPath: '#/properties/visiblePageCount/type',
+                                          params: {
+                                            type: 'integer'
+                                          },
+                                          message: 'should be integer'
+                                        }];
+                                        return false;
+                                      }
+
+                                      if (typeof data1 === "number") {
+                                        if (data1 < 4 || data1 !== data1) {
+                                          validate.errors = [{
+                                            keyword: 'minimum',
+                                            dataPath: (dataPath || '') + '.visiblePageCount',
+                                            schemaPath: '#/properties/visiblePageCount/minimum',
+                                            params: {
+                                              comparison: '>=',
+                                              limit: 4,
+                                              exclusive: false
+                                            },
+                                            message: 'should be >= 4'
+                                          }];
+                                          return false;
+                                        }
+                                      }
+
+                                      var valid1 = errors === errs_1;
                                     }
                                   }
                                 }
-
-                                if (!valid1) {
-                                  var err = {
-                                    keyword: 'oneOf',
-                                    dataPath: (dataPath || '') + '.size',
-                                    schemaPath: '#/properties/size/oneOf',
-                                    params: {
-                                      passingSchemas: passingSchemas1
-                                    },
-                                    message: 'should match exactly one schema in oneOf'
-                                  };
-                                  if (vErrors === null) vErrors = [err];else vErrors.push(err);
-                                  errors++;
-                                  validate.errors = vErrors;
-                                  return false;
-                                } else {
-                                  errors = errs__1;
-
-                                  if (vErrors !== null) {
-                                    if (errs__1) vErrors.length = errs__1;else vErrors = null;
-                                  }
-                                }
-
-                                var valid1 = errors === errs_1;
                               }
                             }
                           }
@@ -1816,38 +1946,43 @@
       "headers": {
         "type": "boolean"
       },
+      "headClassName": {
+        "type": "string"
+      },
       "footers": {
         "type": "boolean"
+      },
+      "footClassName": {
+        "type": "string"
       },
       "displayedEntries": {
         "type": "boolean"
       },
       "schema": {
-        "oneOf": [{
-          "type": "string",
-          "format": "uri",
-          "pattern": "^https?://"
-        }, {
-          "type": "object"
-        }]
+        "type": "object"
       },
-      "start": {
-        "type": "integer"
+      "pageIndex": {
+        "type": "integer",
+        "minimum": 0
       },
-      "size": {
+      "pageSize": {
         "oneOf": [{
-          "type": "number",
+          "type": "integer",
           "minimum": 10,
           "maximum": 10
         }, {
-          "type": "number",
+          "type": "integer",
           "minimum": 25,
           "maximum": 25
         }, {
-          "type": "number",
+          "type": "integer",
           "minimum": 50,
           "maximum": 50
         }]
+      },
+      "visiblePageCount": {
+        "type": "integer",
+        "minimum": 4
       }
     },
     "required": ["schema"]
@@ -1863,224 +1998,123 @@
       throw new Error('Invalid options supplied!');
     }
   }
-  function getTitle(k, v) {
-    return v && v.title || k;
+
+  var pg = null;
+  var store = null;
+
+  function getPaginationState(state) {
+    return {
+      info: getInfo(state.pageSize, state.pageIndex, state.rows.length),
+      pageIndex: state.pageIndex,
+      isTherePreviousPage: isTherePreviousPage(),
+      isThereNextPage: isThereNextPage(),
+      pageIndices: getPageIndices(state.firstVisiblePageIndex, state.rows.length, state.visiblePageCount),
+      currentPageIndex: state.pageIndex
+    };
   }
 
-  var ClassBuilder =
-  /*#__PURE__*/
-  function () {
-    function ClassBuilder() {
-      _classCallCheck(this, ClassBuilder);
+  function getInfo(pageSize, pageIndex, totalCount) {
+    var i = {
+      firstOnPage: totalCount === 0 ? 0 : pageIndex * pageSize + 1,
+      lastOnPage: Math.min(totalCount, (pageIndex + 1) * pageSize),
+      total: totalCount
+    };
+    return "Showing entries ".concat(i.firstOnPage, "-").concat(i.lastOnPage, " of ").concat(i.total);
+  }
 
-      this.classes = [];
-    }
+  function isTherePreviousPage() {
+    return store.state.pageIndex > 0;
+  }
 
-    _createClass(ClassBuilder, [{
-      key: "addClass",
-      value: function addClass(className) {
-        this.classes.push(className);
-        return this;
-      }
-    }, {
-      key: "build",
-      value: function build() {
-        return this.classes.join(' ');
-      }
-    }]);
+  function isThereNextPage() {
+    return store.state.pageIndex + 1 < getPageCount(store.state.rows.length, store.state.pageSize);
+  }
 
-    return ClassBuilder;
-  }();
+  function getPageCount(totalCount, pageSize) {
+    return Math.floor(totalCount / pageSize) + Math.sign(totalCount % pageSize);
+  }
 
-  var createTableBodyNode = function createTableBodyNode(d) {
-    return h("tr", null, Object.keys(d).map(function (k) {
-      return h("td", null, d[k]);
-    }));
-  };
+  function getPageIndices(firstVisiblePageIndex, totalPageCount, visiblePageCount) {
+    var result = [];
 
-  var createTitle = function createTitle(f, k, s) {
-    if (f) {
-      return h("div", null, getTitle(k, s[k]));
-    } else {
-      return getTitle(k, s[k]);
-    }
-  };
+    for (var i = firstVisiblePageIndex; i < totalPageCount; i++) {
+      result.push(i);
 
-  var createTableHeadNode = function createTableHeadNode(f, s, d) {
-    return h("tr", null, d.map(function (k) {
-      return h("th", null, createTitle(f, k, s));
-    }));
-  };
-  var createTableFootNode = function createTableFootNode(f, s, d) {
-    return h("tr", null, d.map(function (k) {
-      return h("th", null, createTitle(f, k, s));
-    }));
-  };
-  var createEmptyTableRowNode = function createEmptyTableRowNode(l) {
-    var cls = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-    var c = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
-    return h("tr", null, h("td", _extends({
-      colspan: l
-    }, cls), c));
-  };
-
-  var createFixedHeightTable = function createFixedHeightTable(s) {
-    return h("div", {
-      class: "tfh-c tfh-h tfh-f".concat(s.footers ? ' mb-3' : '')
-    }, h("div", {
-      class: "tfh"
-    }, createDefaultTable(s)));
-  };
-
-  var buildTableClasses = function buildTableClasses(s) {
-    var cb = new ClassBuilder();
-    s.striped && cb.addClass('table-striped');
-    s.bordered && cb.addClass('table-bordered');
-    s.dark && cb.addClass('table-dark');
-    s.hover && cb.addClass('table-hover');
-    return cb.build();
-  };
-
-  var createDefaultTable = function createDefaultTable(s) {
-    return h("table", {
-      class: "table ".concat(buildTableClasses(s))
-    }, h("thead", null), h("tbody", null), s.footers ? h("tfoot", null) : '');
-  };
-
-  var createTableNode = function createTableNode(s) {
-    return s.fixedHeight ? createFixedHeightTable(s) : createDefaultTable(s);
-  };
-  var createPaginationNode = function createPaginationNode(s) {
-    return h("nav", {
-      "aria-label": "Table pagination",
-      class: "pagination-container"
-    }, h("ul", {
-      class: "pagination"
-    }, h("li", {
-      class: "page-item"
-    }, h("a", {
-      class: "page-link",
-      href: "#"
-    }, "Previous")), h("li", {
-      class: "page-item"
-    }, h("a", {
-      class: "page-link",
-      href: "#"
-    }, "1")), h("li", {
-      class: "page-item"
-    }, h("a", {
-      class: "page-link",
-      href: "#"
-    }, "Next"))));
-  };
-  var createDisplayedEntriesNode = function createDisplayedEntriesNode(s) {
-    return h("div", {
-      class: "mb-2 w-25"
-    }, h("span", {
-      class: "mr-1"
-    }, "Display"), h("select", {
-      class: "form-control d-inline-block w-auto",
-      size: "1"
-    }, h("option", {
-      value: "10",
-      selected: s.size === 10
-    }, "10"), h("option", {
-      value: "25",
-      selected: s.size === 25
-    }, "25"), h("option", {
-      value: "50",
-      selected: s.size === 50
-    }, "50")), h("span", {
-      class: "ml-1"
-    }, "rows"));
-  };
-
-  var Store =
-  /*#__PURE__*/
-  function () {
-    function Store(state) {
-      _classCallCheck(this, Store);
-
-      this.state = {
-        striped: false,
-        dark: false,
-        bordered: false,
-        hover: false,
-        fixedHeight: false,
-        headers: true,
-        footers: false,
-        displayedEntries: false,
-        page: 1,
-        size: 50,
-        pr: null,
-        rows: null,
-        tableRendered: false,
-        headRendered: false,
-        footRendered: false,
-        paginationRendered: false,
-        displayedEntriesRendered: false
-      };
-      this.observers = [];
-      Object.assign(this.state, state);
-
-      if (state.data && _typeof(state.data) === 'object') {
-        this.createNodes(state.data);
+      if (result.length >= visiblePageCount) {
+        break;
       }
     }
 
-    _createClass(Store, [{
-      key: "registerObserver",
-      value: function registerObserver(observer) {
-        this.observers.push(observer);
-      }
-    }, {
-      key: "setState",
-      value: function setState(state) {
-        var notify = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-        Object.assign(this.state, state);
+    return result;
+  }
 
-        if (state.data && _typeof(state.data) === 'object') {
-          this.createNodes(state.data);
-        }
+  function previousClicked() {
+    isTherePreviousPage() && setPageIndex(store.state.pageIndex - 1);
+  }
 
-        if (notify) {
-          this.notifyObservers();
-        }
-      }
-    }, {
-      key: "notifyObservers",
-      value: function notifyObservers() {
-        var _this = this;
+  function nextClicked() {
+    isThereNextPage() && setPageIndex(store.state.pageIndex + 1);
+  }
 
-        this.observers.forEach(function (o) {
-          return o.update(_this);
-        });
-      }
-    }, {
-      key: "createNodes",
-      value: function createNodes(data) {
-        this.state.pr = {};
-        this.state.rows = [];
+  function pageClicked(e) {
+    var cpi = Number(e.target.dataset.pageIndex);
+    var pageIndex = Number(e.target.dataset.gotoPageIndex);
 
-        if (data.rows.length > this.state.size && data.rows.length < 50) {
-          this.state.size = data.rows.length;
-        }
+    if (pageIndex !== cpi) {
+      setPageIndex(pageIndex);
+    }
+  }
 
-        for (var i = 0; i < data.rows.length; i++) {
-          var item = data.rows[i];
-          var id = generateId();
-          var vd = {
-            id: id,
-            data: item
-          };
-          this.state.rows.push(vd);
-          this.state.pr[vd.id] = createTableBodyNode(item);
-        }
-      }
-    }]);
+  function setPageIndex(pageIndex) {
+    // Make sure that the new page index is within the visible page range
+    var firstVisiblePageIndex = store.state.firstVisiblePageIndex;
 
-    return Store;
-  }();
+    if (pageIndex < firstVisiblePageIndex) {
+      firstVisiblePageIndex = pageIndex;
+    }
+
+    if (pageIndex >= firstVisiblePageIndex + store.state.visiblePageCount) {
+      firstVisiblePageIndex = Math.max(pageIndex - store.state.visiblePageCount + 1, 0);
+    }
+
+    store.setState({
+      pageIndex: pageIndex,
+      firstVisiblePageIndex: firstVisiblePageIndex
+    });
+  }
+
+  function setupEventHandlers(element, state) {
+    var pl = element.querySelector('.previous-link');
+    var nl = element.querySelector('.next-link');
+    var gl = element.querySelectorAll('.goto-link');
+
+    if (state.isTherePreviousPage) {
+      pl.addEventListener('click', previousClicked);
+    }
+
+    if (state.isThereNextPage) {
+      nl.addEventListener('click', nextClicked);
+    }
+
+    gl.forEach(function (l) {
+      return l.addEventListener('click', pageClicked);
+    });
+  }
+
+  function createPagination(storeRef) {
+    store = storeRef;
+    var state = getPaginationState(store.state);
+    pg = Pagination(state);
+    setupEventHandlers(pg, state);
+    return pg;
+  }
+  function updatePagination(store) {
+    var state = getPaginationState(store.state);
+    var pl = PaginationList(state);
+    setupEventHandlers(pl, state);
+    pg.textContent = '';
+    pg.appendChild(pl);
+  }
 
   function renderHead(element, store) {
     if (store.state.headers) {
@@ -2088,7 +2122,7 @@
 
       if (thead) {
         thead.textContent = '';
-        thead.appendChild(createTableHeadNode(store.state.fixedHeight, store.state.schema.properties, Object.keys(store.state.schema.properties)));
+        thead.appendChild(HeadRow(store.state.fixedHeight, store.state.schema.properties, Object.keys(store.state.schema.properties)));
         renderDisplayEntries(element, store);
         store.setState({
           headRendered: true
@@ -2103,7 +2137,7 @@
 
       if (tfoot) {
         tfoot.textContent = '';
-        tfoot.appendChild(createTableFootNode(store.state.fixedHeight, store.state.schema.properties, Object.keys(store.state.schema.properties)));
+        tfoot.appendChild(FootRow(store.state.fixedHeight, store.state.schema.properties, Object.keys(store.state.schema.properties)));
         store.setState({
           footRendered: true
         }, false);
@@ -2112,7 +2146,7 @@
   }
 
   function renderTable(element, store) {
-    var tn = createTableNode(store.state);
+    var tn = Table(store.state);
     element.textContent = '';
     element.appendChild(tn);
     store.setState({
@@ -2124,7 +2158,9 @@
     var tbody = element.querySelector('tbody');
 
     if (store.state.rows && Array.isArray(store.state.rows)) {
-      var pd = store.state.rows.slice(store.state.start, store.state.size).map(function (p) {
+      var start = store.state.pageIndex === 0 ? 0 : store.state.pageIndex * store.state.pageSize;
+      var end = Math.min(store.state.rows.length, (store.state.pageIndex + 1) * store.state.pageSize);
+      var pd = store.state.rows.slice(start, end).map(function (p) {
         return store.state.pr[p.id];
       });
       tbody.textContent = '';
@@ -2133,36 +2169,34 @@
       });
     } else {
       tbody.textContent = '';
-      tbody.appendChild(createEmptyTableRowNode(Object.keys(store.state.schema.properties).length, {
+      tbody.appendChild(EmptyTableRow(Object.keys(store.state.schema.properties).length, {
         class: 'text-center'
       }, 'Loading...'));
     }
   }
 
   function renderPagination(element, store) {
-    if (store.state.rows && store.state.rows.length > store.state.size) {
-      var epg = element.querySelector('nav.pagination-container');
-
-      if (epg) {
-        epg.remove();
+    if (store.state.rows && store.state.rows.length > store.state.pageSize) {
+      if (!store.state.paginationRendered) {
+        var pg = createPagination(store);
+        element.appendChild(pg);
+        store.setState({
+          paginationRendered: true
+        }, false);
+      } else {
+        updatePagination(store);
       }
-
-      var pg = createPaginationNode(store.state);
-      element.appendChild(pg);
-      store.setState({
-        paginationRendered: true
-      }, false);
     }
   }
 
   function renderDisplayEntries(element, store) {
     if (store.state.displayedEntries || store.state.rows && store.state.rows.length > 50) {
-      var de = createDisplayedEntriesNode(store.state);
+      var de = DisplayedEntries(store.state);
       var select = de.querySelector('select');
       select.addEventListener('change', function (e) {
         store.setState({
-          size: Number(e.target.value),
-          paginationRendered: false
+          pageSize: Number(e.target.value),
+          pageIndex: 0
         });
       });
       element.insertBefore(de, element.firstChild);
@@ -2191,10 +2225,7 @@
       renderFoot(element, store);
     }
 
-    if (!store.state.paginationRendered) {
-      renderPagination(element, store);
-    }
-
+    renderPagination(element, store);
     renderBody(element, store);
     console.timeEnd('render');
   }
@@ -2217,7 +2248,7 @@
     }
   }
 
-  var Table =
+  var Table$1 =
   /*#__PURE__*/
   function () {
     function Table(element, options) {
@@ -2247,6 +2278,6 @@
   }();
 
   window.mosaic = window.mosaic || {};
-  window.mosaic.Table = Table;
+  window.mosaic.Table = Table$1;
 
 })));

@@ -1,5 +1,5 @@
 import { generateId } from './hydrate'
-import { createTableBodyNode } from './nodes'
+import { BodyColumn } from '../components'
 
 export class Store {
   constructor (state) {
@@ -10,10 +10,14 @@ export class Store {
       hover: false,
       fixedHeight: false,
       headers: true,
+      headClassName: null,
       footers: false,
+      footClassName: null,
       displayedEntries: false,
-      page: 1,
-      size: 50,
+      pageIndex: 0,
+      pageSize: 50,
+      visiblePageCount: 4,
+      firstVisiblePageIndex: 0,
       pr: null,
       rows: null,
       tableRendered: false,
@@ -50,8 +54,8 @@ export class Store {
   createNodes (data) {
     this.state.pr = {}
     this.state.rows = []
-    if (data.rows.length > this.state.size && data.rows.length < 50) {
-      this.state.size = data.rows.length
+    if (data.rows.length > this.state.pageSize && data.rows.length < 50) {
+      this.state.pageSize = data.rows.length
     }
     for (let i = 0; i < data.rows.length; i++) {
       const item = data.rows[i]
@@ -61,7 +65,7 @@ export class Store {
         data: item
       }
       this.state.rows.push(vd)
-      this.state.pr[vd.id] = createTableBodyNode(item)
+      this.state.pr[vd.id] = BodyColumn(item)
     }
   }
 }

@@ -25,8 +25,10 @@
     new window.mosaic.Table(document.getElementById('myTable'), {
       hover: true,
       bordered: true,
-      fixedHeight: true,
+      fixedHeight: false,
+      headClassName: 'bg-light',
       footers: true,
+      footClassName: 'bg-light',
       schema: {
         properties: {
           _id: {
@@ -51,7 +53,7 @@
           }
         }
       },
-      size: 10,
+      pageSize: 10,
       data: function () {
         return window.fetch('http://127.0.0.1:8080/test/rows-186.json')
           .then(function(response) {

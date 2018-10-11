@@ -1,17 +1,18 @@
-import {
-  createTableHeadNode,
-  createTableNode,
-  createEmptyTableRowNode,
-  createDisplayedEntriesNode, createTableFootNode
-} from './nodes'
 import { createPagination, updatePagination } from './pagination'
+import {
+  DisplayedEntries,
+  EmptyTableRow,
+  FootRow,
+  HeadRow,
+  Table
+} from '../components'
 
 function renderHead (element, store) {
   if (store.state.headers) {
     const thead = element.querySelector('thead')
     if (thead) {
       thead.textContent = ''
-      thead.appendChild(createTableHeadNode(store.state.fixedHeight, store.state.schema.properties, Object.keys(store.state.schema.properties)))
+      thead.appendChild(HeadRow(store.state.fixedHeight, store.state.schema.properties, Object.keys(store.state.schema.properties)))
       renderDisplayEntries(element, store)
       store.setState({ headRendered: true }, false)
     }
@@ -23,14 +24,14 @@ function renderFoot (element, store) {
     const tfoot = element.querySelector('tfoot')
     if (tfoot) {
       tfoot.textContent = ''
-      tfoot.appendChild(createTableFootNode(store.state.fixedHeight, store.state.schema.properties, Object.keys(store.state.schema.properties)))
+      tfoot.appendChild(FootRow(store.state.fixedHeight, store.state.schema.properties, Object.keys(store.state.schema.properties)))
       store.setState({ footRendered: true }, false)
     }
   }
 }
 
 function renderTable (element, store) {
-  const tn = createTableNode(store.state)
+  const tn = Table(store.state)
   element.textContent = ''
   element.appendChild(tn)
   store.setState({ tableRendered: true }, false)
@@ -39,17 +40,19 @@ function renderTable (element, store) {
 function renderBody (element, store) {
   const tbody = element.querySelector('tbody')
   if (store.state.rows && Array.isArray(store.state.rows)) {
-    const pd = store.state.rows.slice(store.state.start, store.state.size).map(p => store.state.pr[p.id])
+    const start = store.state.pageIndex === 0 ? 0 : store.state.pageIndex * store.state.pageSize
+    const end = Math.min(store.state.rows.length, (store.state.pageIndex + 1) * store.state.pageSize)
+    const pd = store.state.rows.slice(start, end).map(p => store.state.pr[p.id])
     tbody.textContent = ''
     pd.forEach(d => tbody.appendChild(d))
   } else {
     tbody.textContent = ''
-    tbody.appendChild(createEmptyTableRowNode(Object.keys(store.state.schema.properties).length, { class: 'text-center' }, 'Loading...'))
+    tbody.appendChild(EmptyTableRow(Object.keys(store.state.schema.properties).length, { class: 'text-center' }, 'Loading...'))
   }
 }
 
 function renderPagination (element, store) {
-  if (store.state.rows && store.state.rows.length > store.state.size) {
+  if (store.state.rows && store.state.rows.length > store.state.pageSize) {
     if (!store.state.paginationRendered) {
       const pg = createPagination(store)
       element.appendChild(pg)
@@ -62,12 +65,12 @@ function renderPagination (element, store) {
 
 function renderDisplayEntries (element, store) {
   if (store.state.displayedEntries || (store.state.rows && store.state.rows.length > 50)) {
-    const de = createDisplayedEntriesNode(store.state)
+    const de = DisplayedEntries(store.state)
     const select = de.querySelector('select')
     select.addEventListener('change', e => {
       store.setState({
-        size: Number(e.target.value),
-        paginationRendered: false
+        pageSize: Number(e.target.value),
+        pageIndex: 0
       })
     })
     element.insertBefore(de, element.firstChild)

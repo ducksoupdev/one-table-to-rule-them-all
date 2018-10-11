@@ -1,29 +1,30 @@
 # TODO
 
-See https://advancedcsg.atlassian.net/wiki/spaces/UXCOP/pages/603128486/One+Table+to+Rule+Them+All for full list.
+https://advancedcsg.atlassian.net/wiki/spaces/UXCOP/pages/603128486/One+Table+to+Rule+Them+All
 
 General
 
-- [ ] JSON schema for row data (ajv for validation)
-- [ ] Specify column headers in initialisation
+- [x] JSON schema for row data (ajv for validation)
+- [ ] Validate row data against JSON schema
+- [x] Specify column headers in initialisation
 - [ ] Column header truncate if text too long
-- [ ] Optional column footer
-- [ ] Load any sized data
-- [ ] Display max of 50 rows
-- [ ] Create DOM nodes for each row
-- [ ] Re-use existing nodes for calculations
-- [ ] Create all nodes after loading data
-- [ ] Bind DOM nodes for each set of rows
-- [ ] Allow pagination sizes - 10, 20, 50, 100
+- [x] Optional column footer
+- [x] Load any sized data
+- [x] Display max of 50 rows
+- [x] Create DOM nodes for each row
+- [x] Re-use existing nodes for calculations
+- [x] Create all nodes after loading data
+- [x] Bind DOM nodes for each set of rows
+- [x] Allow pagination sizes - 10, 20, 50, 100
 
 Performance
 
-- [ ] Must seamlessly cope with massive data sets (thousands of cells) without noticeable slow-down
+- [x] Must seamlessly cope with massive data sets (thousands of cells) without noticeable slow-down
 
 Layouts
 
-- [ ] Fixed height - arbitrary number of rows decided on - 20
-- [ ] Scrollable vertically
+- [x] Fixed height - arbitrary number of rows decided on - 20
+- [x] Scrollable vertically
 - [ ] Fixed width
 - [ ] Scrollable horizontally
 - [ ] Primary column on the left
@@ -35,7 +36,7 @@ Sorting
 
 Displayed Entries
 
-- [ ] 10/20/50 only
+- [x] 10/20/50 only
 
 Expandable rows
 
@@ -65,15 +66,15 @@ Multi-line Editing
 
 Top and Bottom Headers/Footers
 
-- [ ] Able to display a footer to show column titles again or totals of numeric values
+- [x] Able to display a footer to show column titles again or totals of numeric values
 
 Pagination
 
-- [ ] A paging system displayed bottom right to allow users to easily move backwards and forwards between the pages of data
+- [x] A paging system displayed bottom right to allow users to easily move backwards and forwards between the pages of data
 
 Display current entries
 
-- [ ] A line of text stating the number of rows currently being displayed and the total number of rows. E.g. "Showing entries 1-25 of 500"
+- [x] A line of text stating the number of rows currently being displayed and the total number of rows. E.g. "Showing entries 1-25 of 500"
 
 Filtering - Full text search
 
@@ -120,4 +121,4 @@ Colour Coding/Status Symbol for rows
 
 Row highlighting
 
-- [ ] Move the mouse over each row to see the highlight
+- [x] Move the mouse over each row to see the highlight

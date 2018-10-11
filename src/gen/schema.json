@@ -20,28 +20,26 @@
     "headers": {
       "type": "boolean"
     },
+    "headClassName": {
+      "type": "string"
+    },
     "footers": {
       "type": "boolean"
+    },
+    "footClassName": {
+      "type": "string"
     },
     "displayedEntries": {
       "type": "boolean"
     },
     "schema": {
-      "oneOf": [
-        {
-          "type": "string",
-          "format": "uri",
-          "pattern": "^https?://"
-        },
-        {
-          "type": "object"
-        }
-      ]
+      "type": "object"
     },
-    "page": {
-      "type": "integer"
+    "pageIndex": {
+      "type": "integer",
+      "minimum": 0
     },
-    "size": {
+    "pageSize": {
       "oneOf": [
         {
           "type": "integer",
@@ -59,6 +57,10 @@
           "maximum": 50
         }
       ]
+    },
+    "visiblePageCount": {
+      "type": "integer",
+      "minimum": 4
     }
   },
   "required": [
