@@ -2,9 +2,10 @@
   "name": "@advanced/component-mosaic-table",
   "version": "1.0.0",
   "description": "Mosaic table component",
-  "main": "dist/table.umd.js",
+  "main": "src/lib/table.js",
   "module": "src/lib/table.js",
   "browser": "dist/table.umd.js",
+  "types": "table.d.ts",
   "scripts": {
     "build": "run-s build:validate build:table",
     "build:table": "rollup -c rollup.config.table.js",
